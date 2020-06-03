@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+
+<div id="app">
+    <!--{{ msg }}-->
+    <!--{{ obj }}-->
+    {{fullName}}
+</div>
+
+<script>
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            msg: 'hello, nihao',
+            obj: {
+                name: '杉杉',
+                age: 18,
+                looks: 'beautiful'
+            },
+            firstName: 'deng',
+            lastName: 'XuMing',
+            fullName: 'dengXuMing'
+        },
+        // computed: {
+        //     fullName() {
+        //         return this.firstName + this.lastName;
+        //     }
+        // },
+        methods: {
+            msgChang() {
+                console.log('变了')
+            }
+        },
+        /*watch: {
+            //key: value,
+
+            //1.value 写作函数
+            // msg: function (newVal, oldVal) { //数据变化时执行的侦听器的回调函数
+            //     console.log('变了')
+            // },
+
+            //2.value 写作字符串,为某方法的名字
+            // msg: 'msgChange'
+
+            //3.value 写作对象,
+            // msg: {
+            //     handler: function () {
+            //         console.log('变了')
+            //     },
+            //     deep: true,
+            // },
+            //3.1 value写作对象时，几个参数
+            // obj: {
+            //     handler() { //必须
+            //         console.log('变了')
+            //     },
+            //     deep: true, //开启深度侦听, 可选侦探对象内部属性的变化
+            //     immediate: true, //数据未变化也先执行一次侦探,可选
+            // }
+
+            //4. value写作数组,可将前3中类型写在一起使用
+            // obj: [
+            //     'msgChange',
+            //     function () {
+            //
+            //     },
+            //     {
+            //         handler() {}
+            //     }
+            // ]
+
+            //1.key的形式如上述
+            //2.key的形式为字符串:侦听某个对象中的属性
+            'obj.name'() {//侦探obj对象中的name属性
+                console.log('name变了')
+                //当只需侦听对象中某一个属性时，用此方法好于deep.
+            }
+        }*/
+
+        watch: {
+            firstName() {
+                this.fullName = this.firstName + this.lastName;
+            },
+            lastName() {
+                this.fullName = this.firstName + this.lastName;
+            }
+        }
+
+    });
+
+    //$watch,
+
+    // 可写为三个参数形式
+    //参数1：字符串，要侦探的数据的名字;
+    //参数2: 函数，数据变化时执行的回掉函数
+    //参数2: 对象，配置参数对象{deep: ,immediate: }
+    // vm.$watch('msg', function () {
+    //     console.log('msg的值变了');
+    // }, {
+    //     deep: true,
+    //     immediate: true,
+    // });
+
+    //$watch, 也可写为2个参数形式
+    //参数1：字符串，要侦探的数据的名字;
+    //参数2: 对象，配置参数对象{deep: ,immediate: }
+    // vm.$watch('msg', {
+    //     handler() {},
+    //     deep: true,
+    //     immediate: false,
+    // });
+
+    //$watch,参数1特殊形式：监听对象的某个属性时使用.
+    // vm.$watch('obj.name', {
+    //     handler() {
+    //         console.log('name变了');
+    //     },
+    //     deep: true,
+    //     immediate: false,
+    // });
+
+    //$watch的返回值
+    //返回值为一函数，作用是取消监听
+    // const unwatch = vm.$watch('msg', function (newVal) {
+    //     if (newVal === 'deng') {
+    //         unwatch();
+    //         return;
+    //     }
+    //     console.log('hahahaha');
+    // });
+    // unwatch();
+
+    //侦听器与计算属性使用场景的差别
+
+</script>
+</body>
+
+</html>

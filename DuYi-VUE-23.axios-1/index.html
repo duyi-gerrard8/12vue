@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+    <script src="./axios.js"></script>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+
+<div id="app">
+    <div class="username">
+        <input type="text" placeholder="用户名" v-model="name">
+    </div>
+    <div class="mail">
+        <input type="text" placeholder="邮箱" v-model="mail">
+    </div>
+    <div class="upload-btn" @click="handleUpload">上传</div>
+    <div class="show-btn" @click="handleShow">显示人物信息</div>
+    <ul class="person-list" v-if="personList.length">
+        <li class="person" v-for="person in personList">
+            <span>{{ person.name }}</span>
+            <span>{{ person.mail }}</span>
+        </li>
+    </ul>
+</div>
+
+<script>
+
+    // a 'https://developer.duyiedu.com/vue/a'
+    // b 'https://developer.duyiedu.com/vue/b'
+
+    //全局配置
+    // axios.defaults.baseURL = 'https://developer.duyiedu.com/vue';
+    // axios.defaults.timeout = 1000;
+
+    //实例配置
+    const instance = axios.create({
+        baseURL: 'https://developer.duyiedu.com/vue'
+    });
+
+    //当同一页面里有不同的请求路径时，需配置不同的基础路径baseURL,此时，用实例配置基础路径最简便。
+    const aInstance = axios.create({
+        baseURL: 'https://developer.duyiedu.com/vue/a'
+    });
+    const bInstance = axios.create({
+        baseURL: 'https://developer.duyiedu.com/vue/b'
+    });
+
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            name: '',
+            mail: '',
+            msg: '',
+            personList: []
+        },
+        methods: {
+            handleUpload() {
+                const {name, mail} = this;
+                axios.post('/setUserInfo', {name, mail}, {
+                    baseURL: 'https://developer.duyiedu.com/vue',
+                }).then(res => {
+                    this.msg = res.data.msg;
+                });
+            },
+            handleShow() {
+                // axios({
+                //     methods: 'get',
+                //     baseURL: 'https://developer.duyiedu.com/vue',
+                //     url: '/'
+                // }).then(res => {
+                //     this.msg = res.data.msg;
+                //     this.personList = res.data.data;
+                //     console.log(res.data);
+                // })
+
+                // axios.get('/getUserInfo', {
+                //     baseURL: 'https://developer.duyiedu.com/vue',
+                // }).then(res => {
+                //     this.msg = res.data.msg;
+                //     this.personList = res.data.data;
+                //     console.log(res.data);
+                // })
+
+                // axios.get('/getUserInfo').then(res => {
+                //     this.msg = res.data.msg;
+                //     this.personList = res.data.data;
+                //     console.log(res.data);
+                // });
+
+                //实例配置
+                // instance.get('/getUserInfo').then(res => {
+                //     this.msg = res.data.msg;
+                //     this.personList = res.data.data;
+                // });
+
+                //实例配置不同的路径
+                aInstance.get('/xxx', {});
+
+                // bInstance.get('/xxx');
+
+                //并发
+                axios.all([
+                    axios.get('/a'),
+                    axios.get('/b'),
+                    axios.get('/c'),
+                ]).then(axios.spread((aRes, bRes, cRes) => {
+
+                }));
+            }
+        },
+        watch: {
+            msg() {
+                if (this.msg === '') {
+                    return;
+                }
+                alert(this.msg);
+                this.msg = '';
+            }
+        }
+    });
+</script>
+</body>
+
+</html>
