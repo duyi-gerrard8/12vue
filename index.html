@@ -1,39 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <script src="./vue.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+  
 </head>
 <body>
 
-<input type="text">
-<button>点击</button>
+  <div id="app">
+    <!-- <div v-if="type === 'A'">杉杉老师是最美的</div>
+    <div v-else-if="type === 'B'">杉杉老师，今天好像变瘦了</div>
+    <div v-else-if="type === 'C'">杉杉老师，今天的衣服搭配的真好</div>
+    <div v-else>啥都不说了，杉杉老师绝对最好看了</div> -->
 
-<div id="app">
+    <!-- <template v-if="show">
+      <div>杉杉</div>
+      <div>杉杉</div>
+      <div>杉杉</div>
+      <div>杉杉</div>
+      <div>杉杉</div>
+    </template> -->
 
-    <div v-html="msg"></div>
-</div>
+    <!-- <div v-show="show">杉杉老师，今天好像变瘦了</div>
+    <div v-if="show">杉杉老师，今天好像变瘦了</div> -->
 
-<script>
-    const oInput = document.getElementsByTagName('input')[0];
-    const oButton = document.getElementsByTagName('button')[0];
-    let msg = null;
+    <template v-show="show">
+      <div>杉杉</div>
+      <div>杉杉</div>
+      <div>杉杉</div>
+      <div>杉杉</div>
+      <div>杉杉</div>
+    </template>
+  </div>
 
+  <script>
 
     const vm = new Vue({
-        el: '#app',
-        data: {
-            msg: 'hello world'
-        }
+      el: '#app',
+      data: {
+        show: "",
+        type: 'D'
+      }
     })
 
-    oButton.onclick = function () {
-        vm.msg = oInput.value;
-    }
-</script>
+    
+  </script>
 </body>
 </html>
