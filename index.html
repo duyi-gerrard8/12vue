@@ -1,109 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <script src="./vue.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>练习_仿淘宝商品筛选</title>
+    <link rel="stylesheet" href="./index.css"/>
+    <script src="./vue.js"></script>
 </head>
 <body>
+<div id="app">
+    <div class="goods" v-for="(goods, goodsIndex) in goodsList" :key="goods.id">
+        <div class="title">{{ goods.title }}：</div>
+        <ul class="type-list">
+            <li
+                    class="type"
+                    :class="{ active: typeIndex === goods.index }"
+                    v-for="(type, typeIndex) in goods.typeList"
+                    :key="type"
+                    @click="addFilterHandle(typeIndex, goods, type, goodsIndex)"
+            >{{ type }}
+            </li>
+        </ul>
+    </div>
+    <div class="choose-type">
+        <div>已选条件</div>
+        <span
+                class="no-goods"
+                v-if="!showFilterGoods"
+        >
+            暂时没有选择过滤条件
+        </span>
+        <ul
+                class="filter-list" v-else
+        >
+            <li
+                    v-for="(goods, goodsKey) in filterObj"
+            >{{ goods }}
+                <span
+                        class="delete-goods"
+                        @click="deleteFilterGoods(goodsKey)"
+                >x</span>
+            </li>
+        </ul>
+    </div>
+</div>
 
-  <div id="app">
-    <ul v-if="shouldShow">
-      <!-- <li v-for="(person, index) of persons">
-        {{ person.name }}--{{ index }}
-      </li> -->
-      <!-- <li v-for="(value, key, index) of shan">
-        {{ value }}--{{ key }}--{{ index }}
-      </li> -->
-      <!-- <li v-for="item in 10">
-        {{ item }}
-      </li> -->
-      <!-- <li v-for="item in 'shanshan'">
-        {{ item }}
-      </li> -->
-
-      <!-- <li></li>
-      <span></span>
-      <li></li>
-      <span></span>
-      <li></li>
-      <span></span>
-      <li></li>
-      <span></span> -->
-
-      <!-- <li v-for="person in persons">{{ person.name }}</li>
-      <span v-for="person in persons">{{ person.age }}</span> -->
-      <!-- <template v-for="person in persons">
-        <li>{{ person.name }}</li>
-        <span>{{ person.age }}</span>
-      </template> -->
-      <!-- <li v-for="(person, index) in persons" :key="person.name">
-        {{ person.name }}
-        <input type="text">
-        <button @click="handleClick(index)">下移</button>
-      </li> -->
-      <!-- <button @click="handleClick">点击</button>
-      <li v-for="(person, index) in persons" :key="index">
-        {{ person.name }}
-      </li> -->
-
-      <!-- <button @click="show = !show">{{ show ? '显示' : '隐藏'}}</button>
-      <input type="text" v-if="show" key="a">
-      <input type="text" v-else key="b"> -->
-
-      <!-- <li 
-        v-for="person in activePersons"
-        v-if="person.isActive"
-      >
-        {{ person.name }}
-      </li> -->
-
-      <li 
-        v-for="person in persons"
-      >
-        {{ person.name }}
-      </li>
-
-    </ul>
-  </div>
-
-  <script>
-    // [1, 2, 3].forEach((item, index) => {
-    //   console.log(item)
-    // })
-
+<script>
     const vm = new Vue({
-      el: '#app',
-      data: {
-        persons: [
-          { name: '杉杉', age: 18, isActive: true},
-          { name: '思彤哥', age: 20, isActive: false},
-          { name: '成哥', age: 22, isActive: false },
-          { name: '邓哥', age: 88, isActive: true },
-        ],
-        activePersons: [],
-        shouldShow: false,
-        shan: {
-          name: '杉杉',
-          age: 18,
-          height: '163cm'
+        el: '#app',
+        data: {
+            filterObj: {},
+            showFilterGoods: false,
+            goodsList: [
+                {
+                    title: '上装',
+                    typeList: ['全部', '针织衫', '毛呢外套', 'T恤', '羽绒服', '棉衣', '卫衣', '风衣'],
+                    id: 1,
+                },
+                {
+                    title: '裤装',
+                    typeList: ['全部', '牛仔裤', '小脚/铅笔裤', '休闲裤', '打底裤', '哈伦裤'],
+                    id: 2,
+                },
+                {
+                    title: '裙装',
+                    typeList: ['全部', '连衣裙', '半身裙', '长袖连衣裙', '中长款连衣裙'],
+                    id: 3,
+                }
+            ]
         },
-        show: true
-      },
-      methods: {
-        handleClick (index) {
-          // const deleteItem = this.persons.splice(index, 1);
-          // this.persons.splice(index + 1, 0, ...deleteItem);
-          this.persons.reverse();
-        }
-      }
-    })
+        methods: {
+            addFilterHandle(typeIndex, goods, type, goodsIndex) {//传入参数2，意思是，获取到点击的li所在数组的对象，即明确切换active的范围。
+                if (type === '全部') {
+                    return;
+                }
+                this.showFilterGoods = true;
+                // console.log(goods);
+                goods.index = typeIndex;
+                vm.$set(this.filterObj, goodsIndex, type);
+                // this.filterObj.push(type);
+                // this.filterObj.splice(goodsIndex, 1, type);
+                // console.log(this.filterObj);
+            },
 
-    vm.activePersons = vm.persons.filter(item => item.isActive);
-    // 计算属性
-    
-  </script>
+            deleteFilterGoods(goodsKey) {
+                this.$delete(this.filterObj, goodsKey);
+                this.goodsList[goodsKey].index = 0;
+                this.changeShowFilter();
+            },
+            changeShowFilter() {
+                const filterObjStr = JSON.stringify(this.filterObj);
+                this.showFilterGoods = filterObjStr !== '{}';
+
+            }
+        },
+    });
+
+    //实现首次添加active样式
+    //注：向对象中新增一个属性，此属性不会渲染页面！
+    vm.goodsList.forEach(item => vm.$set(item, 'index', 0));
+    // console.log(vm.goodsList)
+</script>
+
 </body>
 </html>
