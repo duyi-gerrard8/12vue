@@ -4,103 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>练习_仿淘宝商品筛选</title>
+    <title>练习_toDoList</title>
     <link rel="stylesheet" href="./index.css"/>
     <script src="./vue.js"></script>
 </head>
 <body>
+
 <div id="app">
-    <div class="goods" v-for="(goods, goodsIndex) in goodsList" :key="goods.id">
-        <div class="title">{{ goods.title }}：</div>
-        <ul class="type-list">
+    <div class="header">
+        <div class="container">
+            <div class="logo">toDoList</div>
+            <div class="input-area">
+                <input type="text" @input="handleInput" :value="curMask"/>
+                <button @click="addMask">添加</button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>
+            <span>正在进行</span>
+            <span class="mask-num">{{ needDoList.length }}</span>
+        </h2>
+        <ul class="mask-list">
             <li
-                    class="type"
-                    :class="{ active: typeIndex === goods.index }"
-                    v-for="(type, typeIndex) in goods.typeList"
-                    :key="type"
-                    @click="addFilterHandle(typeIndex, goods, type, goodsIndex)"
-            >{{ type }}
+                    v-for="(mask, index) in needDoList"
+                    :key="mask.id">
+                <div>
+                    <input type="checkbox" @change="doCheck(index, 'need')"/>
+                    <span>{{ mask.title }}</span>
+                </div>
+                <button @click="deleteMask(index, 'need')">删除</button>
             </li>
         </ul>
     </div>
-    <div class="choose-type">
-        <div>已选条件</div>
-        <span
-                class="no-goods"
-                v-if="!showFilterGoods"
-        >
-            暂时没有选择过滤条件
-        </span>
-        <ul
-                class="filter-list" v-else
-        >
+    <div class="container">
+        <h2>
+            <span>已经完成</span>
+            <span class="mask-num">{{ completeList.length }}</span>
+        </h2>
+        <ul class="mask-list complete-list">
             <li
-                    v-for="(goods, goodsKey) in filterObj"
-            >{{ goods }}
-                <span
-                        class="delete-goods"
-                        @click="deleteFilterGoods(goodsKey)"
-                >x</span>
+                    v-for="(mask, index) in completeList"
+                    :key="mask.id"
+            >
+                <div>
+                    <input type="checkbox" @change="doCheck(index, 'complete')"/>
+                    <span>{{ mask.title }}</span>
+                </div>
+                <button @click="deleteMask(index, 'complete')">删除</button>
             </li>
         </ul>
     </div>
 </div>
-
 <script>
     const vm = new Vue({
         el: '#app',
         data: {
-            filterObj: {},
-            showFilterGoods: false,
-            goodsList: [
-                {
-                    title: '上装',
-                    typeList: ['全部', '针织衫', '毛呢外套', 'T恤', '羽绒服', '棉衣', '卫衣', '风衣'],
-                    id: 1,
-                },
-                {
-                    title: '裤装',
-                    typeList: ['全部', '牛仔裤', '小脚/铅笔裤', '休闲裤', '打底裤', '哈伦裤'],
-                    id: 2,
-                },
-                {
-                    title: '裙装',
-                    typeList: ['全部', '连衣裙', '半身裙', '长袖连衣裙', '中长款连衣裙'],
-                    id: 3,
-                }
-            ]
+            curMask: '',
+            needDoList: [],
+            completeList: [],
         },
         methods: {
-            addFilterHandle(typeIndex, goods, type, goodsIndex) {//传入参数2，意思是，获取到点击的li所在数组的对象，即明确切换active的范围。
-                if (type === '全部') {
-                    return;
+            handleInput(e) {
+                // console.log(e.target.value);
+                this.curMask = e.target.value;
+            },
+            addMask() {
+                if (this.curMask === '') {return}
+                this.needDoList.push({
+                    title: this.curMask,
+                    id: Math.random()
+                });
+                this.curMask = '';
+            },
+            doCheck(index, type) {
+                if (type === 'need') {
+                    const completeMask = this.needDoList.splice(index, 1);
+                    this.completeList.push(completeMask[0]);
+                    // this.completeList.push(...completeMask);
+                } else {
+                    const noCompleteMask = this.completeList.splice(index, 1);
+                    this.needDoList.push(...noCompleteMask);
                 }
-                this.showFilterGoods = true;
-                // console.log(goods);
-                goods.index = typeIndex;
-                vm.$set(this.filterObj, goodsIndex, type);
-                // this.filterObj.push(type);
-                // this.filterObj.splice(goodsIndex, 1, type);
-                // console.log(this.filterObj);
             },
-
-            deleteFilterGoods(goodsKey) {
-                this.$delete(this.filterObj, goodsKey);
-                this.goodsList[goodsKey].index = 0;
-                this.changeShowFilter();
+            deleteMask(index, type) {
+                const toDoList = type === 'need' ? this.needDoList : this.completeList;
+                // this.needDoList.splice(index, 1);
+                toDoList.splice(index, 1);
             },
-            changeShowFilter() {
-                const filterObjStr = JSON.stringify(this.filterObj);
-                this.showFilterGoods = filterObjStr !== '{}';
-
-            }
-        },
+        }
     });
-
-    //实现首次添加active样式
-    //注：向对象中新增一个属性，此属性不会渲染页面！
-    vm.goodsList.forEach(item => vm.$set(item, 'index', 0));
-    // console.log(vm.goodsList)
 </script>
 
 </body>
