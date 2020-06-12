@@ -1531,9 +1531,9 @@ css文件在文件夹中，自行拷贝
 
 元素类型 | 属性 |  事件  
 -|-|-
-- input[type=text]、textarea | value | input |
-- input[checkbox]、input[radio] | checked | change |
-- select | value | change |
+input[type=text]、textarea | value | input |
+input[checkbox]、input[radio] | checked | change |
+select | value | change |
 
 
 ## input
@@ -1716,3 +1716,5 @@ const vm = new Vue({
 ```html
 <input v-model.trim="msg">
 ```
+
+# 练习_简易计算器
