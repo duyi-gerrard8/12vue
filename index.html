@@ -1,110 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>15</title>
-    <link rel="stylesheet" href="./index.css">
-    <script src="./vue.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
 </head>
 <body>
-<div id="app">
-    <div
-            class="area"
-            v-for="area in 2"
-    >
-        <h2>{{ area === 1 ? '提问区' : '展示区' }}</h2>
-        <ul>
-            <li
-                    v-for="question in questionList"
-                    :key="question.id"
-            >
-                <h3>{{ question.title }}</h3>
-                <!--简答-->
-                <div v-if="question.type === 'short'">
-                    <input type="text" v-if="area === 1" v-model="question.answer">
-                    <span v-else>{{ question.answer }}</span>
-                </div>
-                <!--单选-->
-                <div v-else-if="question.type === 'single'">
-                    <template v-if="area === 1">
-                        <div v-for="choose in question.chooseList" :key="choose">
-                            <input type="radio" :value="choose" v-model="question.answer"/>
-                            <span>{{ choose }}</span>
-                        </div>
-                    </template>
-                    <span v-else>{{ question.answer }}</span>
-                </div>
-                <!--多选-->
-                <div v-else-if="question.type === 'multiple'">
-                    <template v-if="area === 1">
-                        <div v-for="choose in question.chooseList">
-                            <input type="checkbox" :value="choose" v-model="question.answer"/>
-                            <span>{{ choose }}</span>
-                        </div>
-                    </template>
-                    <div v-else>{{ question.answer && question.answer.toString() }}</div>
-                    <!--&&之前为假时，直接返回前面的的值。-->
-                </div>
-                <!--问答题-->
-                <div v-else>
-                    <textarea v-if="area === 1" v-model="question.answer"></textarea>
-                    <span v-else>{{ question.answer }}</span>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div>
-<script>
+
+  <div id="app">
+    <!-- {{ msg.split('').reverse().join('') }}
+
+    <br>
+
+    {{ someComputed }}
+
+    <br>
+
+    {{ msgReverse }}
+
+    <br>
+
+    {{ msgMethod() }}
+
+    <br>
+
+    {{ name }} -->
+
+    <br>
+    {{ desc }}
+  </div>
+
+  <script>
+
     const vm = new Vue({
-        el: '#app',
-        data: {
-            questionList: [
-                {
-                    type: 'short',
-                    title: '1.请问你的姓名是？',
-                    chooseList: null,
-                    id: 0
-                },
-                {
-                    type: 'single',
-                    title: '2.请问您的性别是？',
-                    chooseList: [
-                        '男',
-                        '女',
-                        '保密',
-                    ],
-                    id: 1,
-                },
-                {
-                    type: 'multiple',
-                    title: '3. 请选择您的兴趣爱好：',
-                    chooseList: [
-                        '看书',
-                        '游泳',
-                        '跑步',
-                        '看电影',
-                        '听音乐',
-                    ],
-                    id: 2,
-                },
-                {
-                    type: 'long',
-                    title: '4. 请介绍一下自己:',
-                    chooseList: null,
-                    id: 3,
-                },
-            ],
+      el: '#app',
+      data: {
+        msg: 'hello，你好呀，我是杉杉',
+        name: 'shanshan',
+        looks: 'beautiful'
+      },
+      methods: {
+        msgMethod () {
+          console.log('methods');
+
+          for(let i = 0; i < 10000; i ++) {
+            //kjkfg 
+          }
+
+          return this.msg.split('').reverse().join('');
+        }
+      },
+      computed: {
+        someComputed: function () {
+          return 'xxxx';
         },
-    });
-
-    vm.questionList.forEach(question => {
-        const answer = question.type === 'multiple' ? [] : '';
-        // question.answer = answer; //新增属性不会渲染页面
-        vm.$set(question, 'answer', answer);
-    });
-
-</script>
+        msgReverse: function () {
+          // console.log('computed');
+          return this.msg.split('').reverse().join('');
+        },
+        // desc () {
+        //   return `姓名：${this.name},外表：${this.looks}`
+        // },
+        desc: {
+          get () {
+            console.log('计算属性被读取啦')
+            return `姓名：${this.name},外表：${this.looks}`
+          },
+          set (newVal) {
+            // 设置
+            console.log('计算属性被设置啦', newVal)
+          }
+        }
+      }
+    })
+  </script>
 </body>
 </html>
