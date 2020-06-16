@@ -2,92 +2,139 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <link rel="stylesheet" href="./index.css">
-  <script src="./vue.js"></script>
-  <script src="./vue-resource.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>23</title>
+    <link rel="stylesheet" href="./index.css">
+    <script src="./axios.js"></script>
+    <script src="./vue.js"></script>
 </head>
 
 <body>
 
-  <div id="app">
+<div id="app">
     <div class="username">
-      <input type="text" placeholder="用户名" v-model="name">
+        <input type="text" placeholder="用户名" v-model="name">
     </div>
     <div class="mail">
-      <input type="text" placeholder="邮箱" v-model="mail">
+        <input type="text" placeholder="邮箱" v-model="mail">
     </div>
     <div class="upload-btn" @click="handleUpload">上传</div>
-    <div class="test-btn" @click="handleTest">测试jsonp</div>
     <div class="show-btn" @click="handleShow">显示人物信息</div>
     <ul class="person-list" v-if="personList.length">
-      <li class="person" v-for="person in personList">
-        <span>{{ person.name }}</span>
-        <span>{{ person.mail }}</span>
-      </li>
+        <li class="person" v-for="person in personList">
+            <span>{{ person.name }}</span>
+            <span>{{ person.mail }}</span>
+        </li>
     </ul>
-  </div>
+</div>
 
-  <script>
+<script>
+    //配置全局默认值
+    // axios.defaults.baseURL = 'https://developer.duyiedu.com/vue';
+    // axios.defaults.timeout = 1000;
+
+
+    //实例配置
+    // const instance = axios.create({
+    //     baseURL: 'https://developer.duyiedu.com/vue',
+    // });
+    //
+    // const aInstance = axios.create({
+    //     baseURL: 'https://developer.duyiedu.com/vue/a',
+    // });
+    // const bInstance = axios.create({
+    //     baseURL: 'https://developer.duyiedu.com/vue/b',
+    // });
+    // a 'https://developer.duyiedu.com/vue/a'
+    // b 'https://developer.duyiedu.com/vue/b'
+
 
     const vm = new Vue({
-      el: '#app',
-      data: {
-        name: '',
-        mail: '',
-        msg: '',
-        personList: []
-      },
-      methods: {
-        handleUpload () {
-          this.$http.post('https://developer.duyiedu.com/vue/setUserInfo', {
-            name: this.name,
-            mail: this.mail
-          }).then(res => {
-            this.msg = res.body.msg;
-          }).catch(error => {
-            this.msg = error.body.msg;
-          })
+        el: '#app',
+        data: {
+            name: '',
+            mail: '',
+            msg: '',
+            personList: []
         },
-        handleShow () {
-          // this.$http.get('https://developer.duyiedu.com/vue/getUserInfo').then(res => {
-          //   this.personList = res.body.data;
-          // })
-
-          this.$http.get('https://developer.duyiedu.com/vue/getUserInfo').then(res => {
-            return res.json();
-          }).then(res => {
-            console.log(res);
-          })
-        },
-        handleTest () {
-          // this.$http.jsonp('https://developer.duyiedu.com/vue/jsonp').then(res => {
-          //   console.log(res);
-          // })
-          this.$http.jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su', {
-            params: {
-              wd: '百度'
+        methods: {
+            handleUpload() {
+                const {name, mail} = this;
+                axios.post('/setUserInfo', {name, mail}, {
+                    baseURL: 'https://developer.duyiedu.com/vue',
+                }).then(res => {
+                    // console.log(res);
+                    this.msg = res.data.msg;
+                });
             },
-            jsonp: 'cb'
-          }).then(res => {
-            console.log(res)
-          })
+            handleShow() {
+                //一个参数的使用
+                // axios({
+                //     method: 'get',
+                //     baseURL: 'https://developer.duyiedu.com/vue',
+                //     url: '/getUserInfo',
+                // }).then(res => {
+                //     // console.log(res.data);
+                //     this.msg = res.data.msg;
+                //     this.personList = res.data.data;
+                // });
+                //2个参数
+                // axios('/getUserInfo', {
+                //     method: 'get',
+                //     baseURL: 'https://developer.duyiedu.com/vue',
+                // }).then(res => {
+                //     // console.log(res.data);
+                //     this.msg = res.data.msg;
+                //     this.personList = res.data.data;
+                // });
+
+                //方法别名
+                // axios.get('/getUserInfo', {
+                //     baseURL: 'https://developer.duyiedu.com/vue',
+                // }).then(res => {
+                //     // console.log(res.data);
+                //     this.msg = res.data.msg;
+                //     this.personList = res.data.data;
+                // });
+
+                //全局配置baseURL，可在使用时省略地址
+                // axios.get('/getUserInfo').then(res => {
+                //     // console.log(res.data);
+                //     this.msg = res.data.msg;
+                //     this.personList = res.data.data;
+                // });
+
+                //实例配置使用,
+                // instance.get('/getUserInfo').then(res => {
+                //     // console.log(res.data);
+                //     this.msg = res.data.msg;
+                //     this.personList = res.data.data;
+                // });
+
+                // aInstance.get('/xxx');
+                // bInstance.get('/xxx');
+
+                axios.all([
+                    axios.post('/setUserInfo', {name: 'shanshan', mail: 'abcd@abc.com'}),
+                    axios.get('/getUserInfo'),
+                ]).then(axios.spread( (postRes, getRes) => {
+                    console.log(postRes, getRes);
+                } ));
+            },
         },
-      },
-      watch: {
-        msg () {
-          if(this.msg === '') {
-            return;
-          }
-          alert(this.msg);
-          this.msg = '';
+        watch: {
+            msg() {
+                if (this.msg === '') {
+                    return;
+                }
+                alert(this.msg);
+                this.msg = '';
+            }
         }
-      }
     })
-  </script>
+</script>
 </body>
 
 </html>
