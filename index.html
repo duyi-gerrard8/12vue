@@ -5,28 +5,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>25</title>
+    <title>26</title>
+    <link rel="stylesheet" href="./index.css">
     <script src="./vue.js"></script>
 </head>
 
 <body>
 
-<div id="app">
-    {{ }}
-</div>
+<div id="app">{{ msg }}</div>
 
 <script>
-    // el --> el.outerHTML -->moban --> render  --> $el   ---> el
+    // 创建、挂载、更新、销毁
+    // crated mounted updated destroyed
 
-    // el $mount()
-
-    // template  -> moban
+    // beforeDestory
 
     const vm = new Vue({
         el: '#app',
-        data: {},
-        template: `<div id="app-10"></div>`
-    })
+        data: {
+            msg: 'hello world'
+        },
+
+        methods: {
+            handle() {
+                console.log('methods里的方法执行了');
+            }
+        },
+        beforeCreate() {
+            this.timer = setInterval(() => {
+                console.log(1);
+            }, 1000);
+
+            console.log(this.msg);//undefined
+            console.log(this.handle);//undefined
+            console.log('---beforeCreate---')//先于watch执行
+        },
+        created() {//第一时间调用methods中的方法，或者操作data中的数据
+            console.log(this.msg);//'hello world'
+            console.log(this.handle);//输出函数内容
+            console.log(this.$el);//undefined
+            console.log('---created----');
+        },
+        beforeMount() {
+            console.log(this.$el);//旧模板，未将生成的模板替换el对应的元素。此处输出：'<div id="app">{{ msg }}</div>'
+            console.log('---beforeMount----');
+        },
+        mounted() {
+            console.log(this.$el);//<div id="app">hello world</div>
+            console.log('---mounted---');
+        },
+        beforeUpdate() {//数据已经更新，但是DOM还未更新
+            console.log(this.msg);//
+            console.log(this.$el.outerHTML);//<div id="app">hello world</div>
+            console.log('---beforeUpdate---');
+        },
+        updated() {
+            console.log(this.msg);//
+            console.log(this.$el.outerHTML);//<div id="app">更新后的data.msg内容</div>
+            console.log('---updated---');
+        },
+        beforeDestroy() {
+            clearInterval(this.timer);
+            console.log('---beforeDestroy---');
+        },
+        destroyed() {
+            console.log('---destroyed---');
+        },
+
+        watch: {
+            msg: {
+                handler() {
+                    console.log('侦听msg的值')
+                },
+                immediate: true
+            }
+        },
+
+    });
+
+    //浏览器输出的是引用
+    const a = {};
+    // console.log(a);
+    a.haha = 'haha';
 </script>
 </body>
 
