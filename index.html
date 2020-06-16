@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>23</title>
+    <title>Document</title>
     <link rel="stylesheet" href="./index.css">
     <script src="./axios.js"></script>
     <script src="./vue.js"></script>
@@ -22,6 +22,7 @@
     </div>
     <div class="upload-btn" @click="handleUpload">上传</div>
     <div class="show-btn" @click="handleShow">显示人物信息</div>
+    <button @click="handleCancelGet">取消get请求</button>
     <ul class="person-list" v-if="personList.length">
         <li class="person" v-for="person in personList">
             <span>{{ person.name }}</span>
@@ -31,24 +32,50 @@
 </div>
 
 <script>
-    //配置全局默认值
-    // axios.defaults.baseURL = 'https://developer.duyiedu.com/vue';
-    // axios.defaults.timeout = 1000;
+    axios.defaults.baseURL = 'https://developer.duyiedu.com/vue';
+    axios.defaults.baseURL = 'http://127.0.0.1:12306';
 
+    //请求拦截器;
+    axios.interceptors.request.use(config => {
+        // console.log(config);
+        // config.method = 'post';
+        // config.url = '/setUserInfo';
+        return config;
+    }, error => {
+        alert('xxx');
+        return Promise.reject(error);
+    });
 
-    //实例配置
-    // const instance = axios.create({
-    //     baseURL: 'https://developer.duyiedu.com/vue',
-    // });
-    //
-    // const aInstance = axios.create({
-    //     baseURL: 'https://developer.duyiedu.com/vue/a',
-    // });
-    // const bInstance = axios.create({
-    //     baseURL: 'https://developer.duyiedu.com/vue/b',
-    // });
-    // a 'https://developer.duyiedu.com/vue/a'
-    // b 'https://developer.duyiedu.com/vue/b'
+    //响应拦截器 && 在响应拦截器中处理错误。
+    const interceptor = axios.interceptors.response.use(response => {
+        // console.log(response);
+        if (response.status === 200) {
+            return response.data;
+        } else {
+
+        }
+    }, error => {
+        if (error.response) {
+            console.log('响应时错误')
+        } else if (error.request) {
+            console.log('请求时错误')
+        } else {
+            console.log('取消请求')
+        }
+        console.log(error.request);//请求时错误
+        console.log(error.response);//响应时错误
+        return Promise.reject(error);
+    });
+
+    //移除拦截器
+    // axios.interceptors.response.eject(interceptor);
+
+    //给axios实例添加拦截器
+    const instance = axios.create();
+    instance.interceptors.request.use();
+
+    //取消请求
+    const cancelToken = axios.CancelToken.source();
 
 
     const vm = new Vue({
@@ -61,68 +88,47 @@
         },
         methods: {
             handleUpload() {
-                const {name, mail} = this;
-                axios.post('/setUserInfo', {name, mail}, {
-                    baseURL: 'https://developer.duyiedu.com/vue',
-                }).then(res => {
-                    // console.log(res);
-                    this.msg = res.data.msg;
-                });
+                axios.post('setUserInfo', {
+                    name: 'shan',
+                    mail: 'shan@qq.com'
+                })
             },
             handleShow() {
-                //一个参数的使用
-                // axios({
-                //     method: 'get',
-                //     baseURL: 'https://developer.duyiedu.com/vue',
-                //     url: '/getUserInfo',
-                // }).then(res => {
-                //     // console.log(res.data);
-                //     this.msg = res.data.msg;
-                //     this.personList = res.data.data;
-                // });
-                //2个参数
-                // axios('/getUserInfo', {
-                //     method: 'get',
-                //     baseURL: 'https://developer.duyiedu.com/vue',
-                // }).then(res => {
-                //     // console.log(res.data);
-                //     this.msg = res.data.msg;
-                //     this.personList = res.data.data;
-                // });
+                axios.get('/getUserInfo1', {
+                    cancelToken: source.token
+                }).then(res => {
+                    console.log(res);
+                }).catch(error => {
+                    // console.log(error);
+                    // const msg = error.message;
+                    // alert(msg);
 
-                //方法别名
-                // axios.get('/getUserInfo', {
-                //     baseURL: 'https://developer.duyiedu.com/vue',
-                // }).then(res => {
-                //     // console.log(res.data);
-                //     this.msg = res.data.msg;
-                //     this.personList = res.data.data;
-                // });
-
-                //全局配置baseURL，可在使用时省略地址
-                // axios.get('/getUserInfo').then(res => {
-                //     // console.log(res.data);
-                //     this.msg = res.data.msg;
-                //     this.personList = res.data.data;
-                // });
-
-                //实例配置使用,
-                // instance.get('/getUserInfo').then(res => {
-                //     // console.log(res.data);
-                //     this.msg = res.data.msg;
-                //     this.personList = res.data.data;
-                // });
-
-                // aInstance.get('/xxx');
-                // bInstance.get('/xxx');
-
-                axios.all([
-                    axios.post('/setUserInfo', {name: 'shanshan', mail: 'abcd@abc.com'}),
-                    axios.get('/getUserInfo'),
-                ]).then(axios.spread( (postRes, getRes) => {
-                    console.log(postRes, getRes);
-                } ));
+                    //错误处理
+                    // console.log(error.request);//请求时错误
+                    // console.log(error.response);//响应时错误
+                    // if (error.response) {
+                    //     // console.log('响应时错误')
+                    //     const {status} = error.response;
+                    //     switch (status) {
+                    //         case 404:
+                    //             alert('url地址错误');
+                    //             break;
+                    //         case 401:
+                    //             alert('xxx');
+                    //             break;
+                    //     }
+                    // } else if (error.request) {
+                    //     // console.log('请求时错误')
+                    //
+                    // } else {
+                    //     // console.log('请求未发出')
+                    //     alert(error.message);
+                    // }
+                });
             },
+            handleCancelGet() {
+                source.cancel('取消请求了');
+            }
         },
         watch: {
             msg() {
