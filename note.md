@@ -2773,7 +2773,7 @@ undefined
 
 在这一步，实例已完成以下的配置：数据观测 (data observer)，属性和方法的运算，watch/event 事件回调。
 
-如果要在**第一时间调用methods中的方法**，或者**操作data中的数据**，可在此钩子中进行操作。
+如果要在第一时间调用methods中的方法，或者操作data中的数据，可在此钩子中进行操作。
 需要注意的是，执行此钩子时，挂载阶段还未开始，$el 属性目前不可见。
 
 此时，可以进行数据请求，将请求回来的值赋值给data中的数据。
@@ -2824,7 +2824,7 @@ undefined
 ### beforeMount
 在挂载开始之前被调用，此时模板已经编译完成，只是未将生成的模板替换el对应的元素。
 
-在此钩子函数中，可以获取到**模板最初始的状态**。
+在此钩子函数中，可以获取到模板最初始的状态。
 
 此时，可以拿到vm.$el，只不过为旧模板
 
@@ -2917,3 +2917,26 @@ const vm = new Vue({
 
 ### destroyed
 Vue 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除。
+
+# 练习_bilibili首页
+
+1.轮播图
+
+baseURL: 'https://developer.duyiedu.com/vue/bz'
+url: '/banner'
+
+2.导航
+
+baseURL: 'https://developer.duyiedu.com/vue/bz'
+url: '/nav'
+
+3.视频
+
+baseURL: 'https://developer.duyiedu.com/vue/bz'
+url: '/video'
+Request:
+
+  name | type | describe 
+  :-: | :-: | :-: 
+  start | Number | 数据起始值
+  offset | Number | 偏移量
