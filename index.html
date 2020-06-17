@@ -59,7 +59,7 @@
                 <path d="M448 128c176 0 320 144 320 320 0 73.6-25.6 147.2-73.6 204.8l-19.2 22.4-22.4 19.2C595.2 742.4 521.6 768 448 768 272 768 128 624 128 448S272 128 448 128m0-64C236.8 64 64 236.8 64 448s172.8 384 384 384c92.8 0 179.2-35.2 246.4-89.6l211.2 208c6.4 6.4 12.8 9.6 22.4 9.6s16-3.2 22.4-9.6c12.8-16 12.8-35.2 0-48l-208-208c54.4-67.2 89.6-153.6 89.6-246.4 0-211.2-172.8-384-384-384z"
                       fill="#aaa"></path>
             </svg>
-            <span>北冥有鱼，化而为鹏</span>
+            <span>北冥有鱼，化而为鹏梵蒂冈连快递费过来付款定金</span>
         </div>
         <div class="avatar">
             <svg width="24" height="24" viewBox="0 0 80 80">
@@ -74,14 +74,78 @@
                       fill="#ccc"></path>
             </svg>
         </div>
-        <div class="download-app">下载APP</div>
+        <div class="download-app">下载App</div>
+    </div>
+
+    <!-- 导航区域 -->
+    <div
+            :class="{
+        'nav-box': navIndex === 1,
+        'hide-nav-box': navIndex === 2,
+        hide: navIndex === 2 && navHide
+      }"
+            v-for="navIndex in 2"
+    >
+        <ul class="nav-list">
+            <li
+                    @click="handleNavClick(index)"
+                    class="nav"
+                    :class="{
+            big: nav.title.length === 3 && navIndex === 2,
+            active: index === navActiveIndex
+          }"
+                    v-for="(nav, index) in navList"
+                    :key="nav.id"
+            >{{ nav.title }}
+            </li>
+        </ul>
+        <div
+                class="down"
+                v-if="navIndex === 1"
+                @click="handleClick"
+        >
+            <svg width="16" height="32" viewBox="0 0 1024 1024">
+                <path d="M515.2 649.6L169.6 304c-12.8-12.8-32-12.8-44.8 0s-12.8 35.2 0 48l368 364.8c12.8 12.8 32 12.8 44.8 0l361.6-361.6c12.8-12.8 12.8-35.2 0-48s-32-12.8-44.8 0L515.2 649.6z"
+                      fill="#ccc"></path>
+            </svg>
+        </div>
+        <div
+                v-else
+                class="up"
+                @click="handleClick"
+        >
+            <svg width="16" height="32" viewBox="0 0 1024 1024">
+                <path d="M854.4 713.6c12.8 12.8 32 12.8 44.8 0s12.8-35.2 0-48L537.6 304c-12.8-12.8-32-12.8-44.8 0L124.8 672c-12.8 12.8-12.8 35.2 0 48s32 12.8 44.8 0l345.6-342.4 339.2 336z"
+                      fill="#ccc"></path>
+            </svg>
+        </div>
     </div>
 </div>
 
 <script>
     const vm = new Vue({
         el: '#app',
-        data: {},
+        data: {
+            navList: [],
+            navHide: true,
+            navActiveIndex: 0,
+        },
+        methods: {
+            handleClick() {
+                this.navHide = !this.navHide;
+            },
+            handleNavClick(index) {
+                this.navActiveIndex = index;
+            },
+        },
+        created() {
+            axios.get('https://developer.duyiedu.com/vue/bz/nav').then(res => {
+                console.log(res);
+                if (res.status === 200) {
+                    this.navList = res.data.data;
+                }
+            })
+        },
     })
 </script>
 </body>
