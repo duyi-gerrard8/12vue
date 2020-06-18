@@ -16,7 +16,8 @@
 
 <!-- 图片、iconfont、svg -->
 
-<div id="app">
+<div id="app" @scroll="handleScroll">
+    <!--header-->
     <div class="header">
         <div class="logo">
             <svg width="62" height="28" viewBox="0 0 62 28" fill="#de698c">
@@ -78,51 +79,55 @@
     </div>
 
     <!-- 导航区域 -->
-    <div
-            :class="{
-        'nav-box': navIndex === 1,
-        'hide-nav-box': navIndex === 2,
-        hide: navIndex === 2 && navHide
-      }"
-            v-for="navIndex in 2"
-    >
-        <ul class="nav-list">
-            <li
-                    @click="handleNavClick(index)"
-                    class="nav"
-                    :class="{
+    <template v-if="navList.length">
+        <div
+                v-for="navIndex in 2"
+                :key="navIndex"
+                :class="{
+                'nav-box': navIndex === 1,
+                'hide-nav-box': navIndex === 2,
+                hide: navIndex === 2 && navHide
+              }"
+        >
+            <ul class="nav-list">
+                <li
+                        @click="handleNavClick(index)"
+                        class="nav"
+                        :class="{
             big: nav.title.length === 3 && navIndex === 2,
             active: index === navActiveIndex
           }"
-                    v-for="(nav, index) in navList"
-                    :key="nav.id"
-            >{{ nav.title }}
-            </li>
-        </ul>
-        <div
-                class="down"
-                v-if="navIndex === 1"
-                @click="handleClick"
-        >
-            <svg width="16" height="32" viewBox="0 0 1024 1024">
-                <path d="M515.2 649.6L169.6 304c-12.8-12.8-32-12.8-44.8 0s-12.8 35.2 0 48l368 364.8c12.8 12.8 32 12.8 44.8 0l361.6-361.6c12.8-12.8 12.8-35.2 0-48s-32-12.8-44.8 0L515.2 649.6z"
-                      fill="#ccc"></path>
-            </svg>
+                        v-for="(nav, index) in navList"
+                        :key="nav.id"
+                >{{ nav.title }}
+                </li>
+            </ul>
+            <div
+                    class="down"
+                    v-if="navIndex === 1"
+                    @click="handleClick"
+            >
+                <svg width="16" height="32" viewBox="0 0 1024 1024">
+                    <path d="M515.2 649.6L169.6 304c-12.8-12.8-32-12.8-44.8 0s-12.8 35.2 0 48l368 364.8c12.8 12.8 32 12.8 44.8 0l361.6-361.6c12.8-12.8 12.8-35.2 0-48s-32-12.8-44.8 0L515.2 649.6z"
+                          fill="#ccc"></path>
+                </svg>
+            </div>
+            <div
+                    v-else
+                    class="up"
+                    @click="handleClick"
+            >
+                <svg width="16" height="32" viewBox="0 0 1024 1024">
+                    <path d="M854.4 713.6c12.8 12.8 32 12.8 44.8 0s12.8-35.2 0-48L537.6 304c-12.8-12.8-32-12.8-44.8 0L124.8 672c-12.8 12.8-12.8 35.2 0 48s32 12.8 44.8 0l345.6-342.4 339.2 336z"
+                          fill="#ccc"></path>
+                </svg>
+            </div>
         </div>
-        <div
-                v-else
-                class="up"
-                @click="handleClick"
-        >
-            <svg width="16" height="32" viewBox="0 0 1024 1024">
-                <path d="M854.4 713.6c12.8 12.8 32 12.8 44.8 0s12.8-35.2 0-48L537.6 304c-12.8-12.8-32-12.8-44.8 0L124.8 672c-12.8 12.8-12.8 35.2 0 48s32 12.8 44.8 0l345.6-342.4 339.2 336z"
-                      fill="#ccc"></path>
-            </svg>
-        </div>
-    </div>
+    </template>
+
 
     <!--banner-->
-    <div class="banner-box">
+    <div class="banner-box" v-if="bannerList.length">
         <ul class="banner-list"
             :style="bannerStyle"
             @transitionend="handleTransitionEnd"
@@ -148,6 +153,41 @@
             ></li>
         </ul>
     </div>
+
+    <!--video-->
+    <div class="video-box"
+         v-if="videoList.length"
+    >
+        <ul class="video-list">
+            <li class="video"
+                v-for="video in videoList"
+                :key="video.id"
+            >
+                <div class="poster">
+                    <img :src="video.poster" :alt="video.title">
+                    <div class="info">
+                        <div class="play">
+                            <svg viewBox="0 0 1024 1024">
+                                <path d="M800 128H224C134.4 128 64 198.4 64 288v448c0 89.6 70.4 160 160 160h576c89.6 0 160-70.4 160-160V288c0-89.6-70.4-160-160-160z m96 608c0 54.4-41.6 96-96 96H224c-54.4 0-96-41.6-96-96V288c0-54.4 41.6-96 96-96h576c54.4 0 96 41.6 96 96v448z"></path>
+                                <path d="M684.8 483.2l-256-112c-22.4-9.6-44.8 6.4-44.8 28.8v224c0 22.4 22.4 38.4 44.8 28.8l256-112c25.6-9.6 25.6-48 0-57.6z"></path>
+                            </svg>
+                            {{ video.play }}
+                        </div>
+                        <div class="rank"
+                             v-if="video.rank"
+                        >
+                            <svg viewBox="0 0 1024 1024">
+                                <path d="M800 128H224C134.4 128 64 198.4 64 288v448c0 89.6 70.4 160 160 160h576c89.6 0 160-70.4 160-160V288c0-89.6-70.4-160-160-160z m96 608c0 54.4-41.6 96-96 96H224c-54.4 0-96-41.6-96-96V288c0-54.4 41.6-96 96-96h576c54.4 0 96 41.6 96 96v448z"></path>
+                                <path d="M240 384h64v64h-64zM368 384h384v64h-384zM432 576h352v64h-352zM304 576h64v64h-64z"></path>
+                            </svg>
+                            {{ video.rank }}
+                        </div>
+                    </div>
+                </div>
+                <div class="title">{{ video.title }}</div>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <script>
@@ -164,6 +204,19 @@
                 transition: 'left .3s',
             },
             bannerActiveIndex: 0,
+
+            videoOldList: [],
+            videoGettingData: false,
+            videoCount: 0,
+        },
+        computed: {
+            videoList() {
+                return this.videoOldList.map(video => {
+                    video.play = video.play > 10000 ? video.play / 10000 + '万' : video.play;
+                    video.rank = video.rank > 10000 ? video.rank / 10000 + '万' : video.rank;
+                    return video;
+                });
+            },
         },
         methods: {
             handleClick() {
@@ -177,7 +230,7 @@
                     if (this.bannerActiveIndex === 0) {
                         this.bannerStyle.transition = 'left .3s';
                     }
-                    this.bannerActiveIndex ++;
+                    this.bannerActiveIndex++;
                     this.bannerStyle.left = -this.bannerActiveIndex * this.bannerWidth + 'px';
                 }, 1500);
             },
@@ -189,10 +242,39 @@
                 }
                 this.autoMove();
             },
+            handleScroll(e) {
+                // const dom = e.target;
+                const {scrollHeight, offsetHeight, scrollTop} = e.target;
+                const toBottomHeight = scrollHeight - offsetHeight - scrollTop;
+                const videoLength = this.videoList.length;
+                if (videoLength === this.videoCount) {
+                    return;
+                }
+                // console.log(toBottomHeight + '----');
+
+                if (toBottomHeight < 200 && !this.videoGettingData) {
+                    this.videoGettingData = true;
+                    axios.get('https://developer.duyiedu.com/vue/bz/video', {
+                        params: {
+                            start: this.videoList.length,
+                            offset: 12,
+                        }
+                    }).then(res => {
+                        if (res.status === 200) {
+                            // console.log(res.data.data)
+                            this.videoOldList.push(...res.data.data);
+                            this.videoGettingData = false;
+                        }
+                    });
+                }
+
+                // console.log(dom.scrollHeight, dom.offsetHeight, dom.scrollTop);
+                //整个滚动区域的高度，元素的高(#app高)，滚动的距离
+            },
         },
         created() {
             axios.get('https://developer.duyiedu.com/vue/bz/nav').then(res => {
-                console.log(res);
+                // console.log(res);
                 if (res.status === 200) {
                     this.navList = res.data.data;
                 }
@@ -204,12 +286,25 @@
                     lastEle.id = Math.floor(Math.random() * 10000000);
                     this.bannerList = [...res.data.data, lastEle];
                 }
-            })
+            });
+
+            axios.get('https://developer.duyiedu.com/vue/bz/video', {
+                params: {
+                    start: 0,
+                    offset: 12,
+                }
+            }).then(res => {
+                // console.log(res)
+                if (res.status === 200) {
+                    this.videoCount = res.data.count;
+                    this.videoOldList = res.data.data;
+                }
+            });
         },
         mounted() {
             this.autoMove();
         },
-    })
+    });
 </script>
 </body>
 
