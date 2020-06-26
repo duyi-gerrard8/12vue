@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2bf50992-60ba-45d5-9104-b961ceb216bb" name="默认更改列表" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/axios.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/note.md" beforeDir="false" afterPath="$PROJECT_DIR$/note.md" afterDir="false" />
     </list>
@@ -18,49 +21,49 @@
     <session id="731340657">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="20" />
+          <entry key="project.closed" value="21" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.10" value="2" />
           <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.7" value="3" />
-          <entry key="project.open.time.8" value="10" />
+          <entry key="project.open.time.8" value="11" />
           <entry key="project.open.time.9" value="2" />
-          <entry key="project.opened" value="21" />
+          <entry key="project.opened" value="22" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="css" value="9" />
-          <entry key="gitignore" value="4" />
-          <entry key="html" value="26" />
+          <entry key="gitignore" value="5" />
+          <entry key="html" value="27" />
           <entry key="js" value="4" />
-          <entry key="md" value="62" />
+          <entry key="md" value="64" />
           <entry key="svg" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CSS" value="9" />
-          <entry key="HTML" value="26" />
+          <entry key="HTML" value="27" />
           <entry key="JavaScript" value="4" />
-          <entry key="Markdown" value="62" />
-          <entry key="PLAIN_TEXT" value="4" />
+          <entry key="Markdown" value="64" />
+          <entry key="PLAIN_TEXT" value="5" />
           <entry key="SVG" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="31" />
-          <entry key="html" value="17818" />
+          <entry key="html" value="18276" />
           <entry key="md" value="134" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="31" />
-          <entry key="HTML" value="17818" />
+          <entry key="HTML" value="18276" />
           <entry key="Markdown" value="134" />
         </counts>
       </usages-collector>
@@ -83,8 +86,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
+            <state relative-caret-position="504">
+              <caret line="32" column="35" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
             </state>
           </provider>
         </entry>
@@ -219,11 +222,12 @@
       <workItem from="1592274920645" duration="18333000" />
       <workItem from="1592361908055" duration="11127000" />
       <workItem from="1592446969167" duration="18442000" />
+      <workItem from="1593156649874" duration="2465000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="186386000" />
+    <option name="totallyTimeSpent" value="189104000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -272,7 +276,6 @@
     <entry file="file://$PROJECT_DIR$/DuYi-VUE-20.侦听器/note.md" />
     <entry file="file://$PROJECT_DIR$/DuYi-VUE-3.vue的响应式-1/index.html" />
     <entry file="file://$PROJECT_DIR$/DuYi-VUE-3.vue的响应式-1/note.md" />
-    <entry file="file://$PROJECT_DIR$/.gitignore" />
     <entry file="file://$PROJECT_DIR$/vue-note.md" />
     <entry file="file://$USER_HOME$/AppData/Local/Temp/HZ$D.107.611/HZ$D.107.612/DuYi-VUE-11.-/note.md" />
     <entry file="file://$PROJECT_DIR$/index.css" />
@@ -297,6 +300,24 @@
     <entry file="file://$PROJECT_DIR$/img/play.svg" />
     <entry file="file://$PROJECT_DIR$/img/view.svg" />
     <entry file="file://$PROJECT_DIR$/assets/index.css" />
+    <entry file="file://$PROJECT_DIR$/../课程资料/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="57" column="61" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../note.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../../../Level One 直播课程内容/20191121 git/git/git的指令们.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="FIRST">
@@ -304,23 +325,6 @@
             <caret line="24" column="45" selection-start-line="24" selection-start-column="45" selection-end-line="24" selection-end-column="45" />
           </first_editor>
           <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../note.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="1027">
-            <caret line="3150" column="7" lean-forward="true" selection-start-line="3150" selection-start-column="7" selection-end-line="3150" selection-end-column="7" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../课程资料/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="57" column="61" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="61" />
         </state>
       </provider>
     </entry>
@@ -336,8 +340,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
+        <state relative-caret-position="504">
+          <caret line="32" column="35" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
         </state>
       </provider>
     </entry>
