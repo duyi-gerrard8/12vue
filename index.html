@@ -2,55 +2,68 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>34</title>
-    <script src="./vue.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
 </head>
 
 <body>
-<div id="app">
-    <my-cmp :list="list"></my-cmp>
-</div>
+  <div id="app">
+    father: {{ array }}
+    <button @click="array.push(4)">father 點擊</button>
+    <my-array :array="array"></my-array>
 
-<script>
-    Vue.component(
-        'my-cmp', {
-            // prop: ['list'],
-            props: {
-                // list: [Array, String],
-                list: {
-                    type: Array,
-                    default() {
-                        return [
-                            {name: 'haha'},
-                            {name: 'heihei'},
-                        ]
-                    },
-                    required: true,
-                    validator(prop) {
-                        return prop.length > 3;
-                    },
-                }
-            },
-            template: `
-                <ul>
-                    <li v-for="person in list" :key="person.name">{{ person.name }}</li>
-                </ul>
-            `
+    <!-- {{ count }}
+    <my-count :count="count"></my-count> -->
+  </div>
+
+  <script>
+    Vue.component('my-array', {
+      props: {
+        array: Array
+      },
+      data () {
+        return {
+          myArray: this.array, // 引用 深度克隆
         }
-    );
-    const vm = new Vue({
-        el: '#app',
-        data: {
-            list: [
-                { name: 'shanshan' },
-                { name: 'duyi' },
-            ]
-        }
+      },
+      template: `
+        <div>
+          son: {{ myArray }}
+          <button @click="myArray.push(4)">son 點擊</button>
+        </div>
+      `
     })
-</script>
+
+    size="str"
+    str = "    xxXX    ";
+
+    Vue.component('my-count', {
+      props: {
+        count: Number
+      },
+      data () {
+        return {
+          myCount: this.count
+        }
+      },
+      template: `
+        <div>
+          son: {{ myCount }}
+          <button @click="myCount ++">son 點擊</button>
+        </div>
+      `
+    })
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        count: 0,
+        array: [1, 2, 3]
+      }
+    })
+  </script>
 </body>
 
 </html>
