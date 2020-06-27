@@ -5,33 +5,156 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>36</title>
+    <title>37</title>
     <script src="./vue.js"></script>
 </head>
 
 <body>
-<!-- 非prop特性会替换/合并（class、style）已有特性 -->
 <div id="app">
-    <my-cmp type="radio" class="haha"></my-cmp>
+    <!--<div :style="{ fontSize: postFontSize + 'em' }">
+        <blog-post
+                :post="post"
+                v-for="post in posts"
+                :key="post.id"
+                @enlarge-text="postFontSize += $event"
+        ></blog-post>
+    </div>-->
+
+    <!--<base-input @focus.native="onFocus" @blur.native="onBlur"></base-input>-->
+    <!--<base-input @focus="onFocus" @blur="onBlur"></base-input>-->
+
+
+    <!--<base-input1 :value="name" @input="name = $event"></base-input1>-->
+    <!--<base-input1 v-model="name"></base-input1>-->
+
+
+    <!--<base-checkbox-->
+            <!--:checked="checked"-->
+            <!--@change="checked = $event"-->
+    <!--&gt;</base-checkbox>-->
+    <!--<base-checkbox v-model="father"></base-checkbox>-->
+
+
+    <!--<base-input2 :value="name" @input="name = $event"></base-input2>-->
+    <!--<base-input2 :value="name" @update:value="name = $event"></base-input2>-->
+    <!--使用修饰符.sync效果等同于上句-->
+    <base-input2 :value.sync="name" ></base-input2>
+
 </div>
 
 <script>
-    Vue.component('my-cmp', {
-        props: ['a'],
-        inheritAttrs: false,
-        mounted() {
-            console.log(this.$attrs);
-        },
-        template: `
-        <label>
-          选择：
-          <input v-bind="$attrs" />
-        </label>
-      `
-    })
+    // 点击了子组件的button -> 告诉父组件去增加字号 -> 可以更改控制字体大小的数据
+    // 子组件内触发事件   在父组件内监听子组件的事件
+    // 自定义事件 enlarge-text
+    // $emit(name)
+    // v-bind .sync 语法糖 :prop @update:prop
+
+    Vue.component(
+        'base-input2', {
+            props: {
+                value: String,
+            },
+            template: `
+                <label>
+                    姓名：
+                    <input type="text" :value="value" @input="$emit('update:value', $event.target.value)"/>
+                </label>
+            `
+        }
+    );
+
+    Vue.component(
+        'base-checkbox', {
+            model: {
+                prop: 'son', //设置绑定的特性是什么
+                event: 'change', //设置监听的事件是什么
+            },
+            props: {
+                son: Boolean,
+            },
+            template: `
+                <input
+                    type="checkbox"
+                    :checked="son"
+                    @change="$emit('change', $event.target.checked)"
+                />
+            `
+        }
+    );
+
+    Vue.component(
+        'base-input1', {
+            // model: {
+            //     prop: 'checked',
+            //     event: 'change'
+            // },
+            props: {
+                value: String,
+            },
+            template: `
+                <label>
+                    姓名：
+                    <input type="text" :value="value" @input="$emit('input', $event.target.value)"/>
+                </label>
+            `
+        }
+    );
+
+    Vue.component(
+        'base-input', {
+            mounted() {
+                console.log(this.$listeners)
+            },
+            template: `
+                <label>
+                    姓名：
+                    <input type="text" v-on="$listeners"/>
+                </label>
+            `
+        }
+    );
+
+    Vue.component(
+        'blog-post', {
+            props: {
+                post: Object,
+            },
+            template: `
+                <div>
+                    <h3>{{ post.title }}</h3>
+                    <button @click="$emit('enlarge-text', 0.2)">放大字号</button>
+                    <div>{{ post.content }}</div>
+                </div>
+
+            `
+        }
+    );
+
     const vm = new Vue({
         el: '#app',
-        data: {}
+        data: {
+            postFontSize: 1, // 1 em
+            posts: [
+                {title: '標題', content: '内容内容内容', id: 0},
+                {title: '標題1', content: '内容内容内容', id: 1},
+                {title: '標題2', content: '内容内容内容', id: 2},
+                {title: '標題3', content: '内容内容内容', id: 3},
+            ],
+            name: 'shanshan',
+            father: true
+        },
+        methods: {
+            onEnlargeText(e) {
+                // this.postFontSize += e;
+            },
+
+            onFocus() {
+                console.log('focus')
+            },
+            onBlur() {
+                console.log('blur')
+            },
+        },
     })
 </script>
 </body>
