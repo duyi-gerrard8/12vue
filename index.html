@@ -5,155 +5,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>37</title>
+    <title>38</title>
     <script src="./vue.js"></script>
 </head>
 
 <body>
 <div id="app">
-    <!--<div :style="{ fontSize: postFontSize + 'em' }">
-        <blog-post
-                :post="post"
-                v-for="post in posts"
-                :key="post.id"
-                @enlarge-text="postFontSize += $event"
-        ></blog-post>
-    </div>-->
+    <!--<my-cmp>这是写在组件标签内的文字</my-cmp>-->
+    <!--<my-cmp>{{ name }}</my-cmp>-->
 
-    <!--<base-input @focus.native="onFocus" @blur.native="onBlur"></base-input>-->
-    <!--<base-input @focus="onFocus" @blur="onBlur"></base-input>-->
+    <!--<my-button>button</my-button>-->
+    <!--<my-button/>-->
 
+    <!--具名插槽-->
+    <!--<my-cmp>-->
+    <!--<template v-slot:header>-->
+    <!--<div>头部</div>-->
+    <!--</template>-->
+    <!--<template v-slot:default>-->
+    <!--<p>主要内容</p>-->
+    <!--</template>-->
 
-    <!--<base-input1 :value="name" @input="name = $event"></base-input1>-->
-    <!--<base-input1 v-model="name"></base-input1>-->
+    <!--<template v-slot:footer>-->
+    <!--<div>底部</div>-->
+    <!--</template>-->
 
+    <!--</my-cmp>-->
 
-    <!--<base-checkbox-->
-            <!--:checked="checked"-->
-            <!--@change="checked = $event"-->
-    <!--&gt;</base-checkbox>-->
-    <!--<base-checkbox v-model="father"></base-checkbox>-->
+    <!--<my-cmp>-->
+    <!--<template v-slot:default="slotProps">-->
+    <!--{{ slotProps.user }}-->
+    <!--</template>-->
+    <!--</my-cmp>-->
 
-
-    <!--<base-input2 :value="name" @input="name = $event"></base-input2>-->
-    <!--<base-input2 :value="name" @update:value="name = $event"></base-input2>-->
-    <!--使用修饰符.sync效果等同于上句-->
-    <base-input2 :value.sync="name" ></base-input2>
-
+    <!--独占默认插槽的缩写语法-->
+    <!--<my-cmp v-slot="slotProps">-->
+        <!--{{ slotProps.user.name }}-->
+    <!--</my-cmp>-->
+    <!--解构插槽Prop-->
+    <my-cmp v-slot="{user}">
+        {{ user.name }}
+    </my-cmp>
 </div>
 
 <script>
-    // 点击了子组件的button -> 告诉父组件去增加字号 -> 可以更改控制字体大小的数据
-    // 子组件内触发事件   在父组件内监听子组件的事件
-    // 自定义事件 enlarge-text
-    // $emit(name)
-    // v-bind .sync 语法糖 :prop @update:prop
+    // 插槽 slot
+    // 知识点 微多 杂
+    // 默认: 有 用你的; 没有 用我的
+    // v-slot
+    // <slot></slot> name"default"
 
     Vue.component(
-        'base-input2', {
-            props: {
-                value: String,
-            },
-            template: `
-                <label>
-                    姓名：
-                    <input type="text" :value="value" @input="$emit('update:value', $event.target.value)"/>
-                </label>
-            `
-        }
-    );
-
-    Vue.component(
-        'base-checkbox', {
-            model: {
-                prop: 'son', //设置绑定的特性是什么
-                event: 'change', //设置监听的事件是什么
-            },
-            props: {
-                son: Boolean,
-            },
-            template: `
-                <input
-                    type="checkbox"
-                    :checked="son"
-                    @change="$emit('change', $event.target.checked)"
-                />
-            `
-        }
-    );
-
-    Vue.component(
-        'base-input1', {
-            // model: {
-            //     prop: 'checked',
-            //     event: 'change'
-            // },
-            props: {
-                value: String,
-            },
-            template: `
-                <label>
-                    姓名：
-                    <input type="text" :value="value" @input="$emit('input', $event.target.value)"/>
-                </label>
-            `
-        }
-    );
-
-    Vue.component(
-        'base-input', {
-            mounted() {
-                console.log(this.$listeners)
-            },
-            template: `
-                <label>
-                    姓名：
-                    <input type="text" v-on="$listeners"/>
-                </label>
-            `
-        }
-    );
-
-    Vue.component(
-        'blog-post', {
-            props: {
-                post: Object,
+        'my-cmp', {
+            data() {
+                return {
+                    user: {
+                        name: 'shanshan',
+                        age: 18,
+                    }
+                }
             },
             template: `
                 <div>
-                    <h3>{{ post.title }}</h3>
-                    <button @click="$emit('enlarge-text', 0.2)">放大字号</button>
-                    <div>{{ post.content }}</div>
+                    <slot :user="user"></slot>
                 </div>
-
             `
         }
     );
+
+    // Vue.component('my-cmp', {
+    //     template: `
+    //         <div class="container">
+    //             <header>
+    //                 <slot name="header"></slot>
+    //             </header>
+    //             <main>
+    //                 <slot></slot>
+    //             </main>
+    //             <footer>
+    //                 <slot name="footer"></slot>
+    //             </footer>
+    //         </div>
+    //     `
+    // });
+
+    // Vue.component(
+    //     'my-button', {
+    //         template:
+    //             `
+    //     <button>
+    //     <slot>Submit</slot>
+    //     </button>
+    //     `
+    //     }
+    // );
+
+    // Vue.component(
+    //     'my-cmp', {
+    //         data() {
+    //             return {
+    //                 name: 'shanshan'
+    //             }
+    //         },
+    //         template: `
+    //             <div>
+    //                 <slot></slot>
+    //                 xxx
+    //             </div>
+    //         `
+    //     }
+    // );
 
     const vm = new Vue({
         el: '#app',
         data: {
-            postFontSize: 1, // 1 em
-            posts: [
-                {title: '標題', content: '内容内容内容', id: 0},
-                {title: '標題1', content: '内容内容内容', id: 1},
-                {title: '標題2', content: '内容内容内容', id: 2},
-                {title: '標題3', content: '内容内容内容', id: 3},
-            ],
-            name: 'shanshan',
-            father: true
-        },
-        methods: {
-            onEnlargeText(e) {
-                // this.postFontSize += e;
-            },
-
-            onFocus() {
-                console.log('focus')
-            },
-            onBlur() {
-                console.log('blur')
-            },
+            name: '渡一'
         },
     })
 </script>
