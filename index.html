@@ -5,123 +5,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>38</title>
+    <title>39.动态组件</title>
     <script src="./vue.js"></script>
 </head>
 
 <body>
 <div id="app">
-    <!--<my-cmp>这是写在组件标签内的文字</my-cmp>-->
-    <!--<my-cmp>{{ name }}</my-cmp>-->
+    <!--<component is="cmp-b"></component>-->
+    <button
+            v-for="page in pages"
+            :key="page.id"
+            @click="cmpPage = page.cmp"
+    >{{ page.name }}</button>
+    <keep-alive>
+        <component :is="cmpPage"></component>
+    </keep-alive>
 
-    <!--<my-button>button</my-button>-->
-    <!--<my-button/>-->
-
-    <!--具名插槽-->
-    <!--<my-cmp>-->
-    <!--<template v-slot:header>-->
-    <!--<div>头部</div>-->
-    <!--</template>-->
-    <!--<template v-slot:default>-->
-    <!--<p>主要内容</p>-->
-    <!--</template>-->
-
-    <!--<template v-slot:footer>-->
-    <!--<div>底部</div>-->
-    <!--</template>-->
-
-    <!--</my-cmp>-->
-
-    <!--<my-cmp>-->
-    <!--<template v-slot:default="slotProps">-->
-    <!--{{ slotProps.user }}-->
-    <!--</template>-->
-    <!--</my-cmp>-->
-
-    <!--独占默认插槽的缩写语法-->
-    <!--<my-cmp v-slot="slotProps">-->
-        <!--{{ slotProps.user.name }}-->
-    <!--</my-cmp>-->
-    <!--解构插槽Prop-->
-    <my-cmp v-slot="{user}">
-        {{ user.name }}
-    </my-cmp>
 </div>
 
 <script>
-    // 插槽 slot
-    // 知识点 微多 杂
-    // 默认: 有 用你的; 没有 用我的
-    // v-slot
-    // <slot></slot> name"default"
-
     Vue.component(
-        'my-cmp', {
+        'cmp-post', {
             data() {
                 return {
-                    user: {
-                        name: 'shanshan',
-                        age: 18,
-                    }
+                    postCmp: undefined,
+                    posts: [
+                        {title: '标题', content: { template: `<div>内容1</div>`}, id: 11},
+                        {title: '标题', content: { template: `<div>内容2</div>`}, id: 12},
+                        {title: '标题', content: { template: `<div>内容3</div>`}, id: 13},
+                    ]
                 }
+            },
+            created() {
+                this.postCmp = this.posts[0].content;
+            },
+            activated() {
+                console.log('post-activated');
+            },
+            deactivated() {
+                console.log('post-deactivated');
             },
             template: `
                 <div>
-                    <slot :user="user"></slot>
+                    <button v-for="post in posts" :key="post.id" @click="postCmp = post.content">{{ post.title }}</button>
+                    <keep-alive>
+                        <component :is="postCmp"></component>
+                    </keep-alive>
                 </div>
             `
         }
     );
-
-    // Vue.component('my-cmp', {
-    //     template: `
-    //         <div class="container">
-    //             <header>
-    //                 <slot name="header"></slot>
-    //             </header>
-    //             <main>
-    //                 <slot></slot>
-    //             </main>
-    //             <footer>
-    //                 <slot name="footer"></slot>
-    //             </footer>
-    //         </div>
-    //     `
-    // });
-
-    // Vue.component(
-    //     'my-button', {
-    //         template:
-    //             `
-    //     <button>
-    //     <slot>Submit</slot>
-    //     </button>
-    //     `
-    //     }
-    // );
-
-    // Vue.component(
-    //     'my-cmp', {
-    //         data() {
-    //             return {
-    //                 name: 'shanshan'
-    //             }
-    //         },
-    //         template: `
-    //             <div>
-    //                 <slot></slot>
-    //                 xxx
-    //             </div>
-    //         `
-    //     }
-    // );
+    Vue.component(
+        'cmp-more', {
+            activated() {
+                console.log('more-activated');
+            },
+            deactivated() {
+                console.log('more-deactivated');
+            },
+            template: `
+                <div>more</div>
+            `
+        }
+    );
 
     const vm = new Vue({
         el: '#app',
         data: {
-            name: '渡一'
+            cmpPage: 'cmp-post',
+            pages: [
+                {name: '博客', cmp: 'cmp-post', id: 0},
+                {name: '更多', cmp: 'cmp-more', id: 1},
+            ]
         },
-    })
+    });
 </script>
 </body>
 
