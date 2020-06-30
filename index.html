@@ -5,80 +5,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>39.动态组件</title>
+    <title>40</title>
+    <link rel="stylesheet" href="./pikaday.css">
+    <script src="./pikaday.js"></script>
     <script src="./vue.js"></script>
 </head>
 
 <body>
 <div id="app">
-    <!--<component is="cmp-b"></component>-->
-    <button
-            v-for="page in pages"
-            :key="page.id"
-            @click="cmpPage = page.cmp"
-    >{{ page.name }}</button>
-    <keep-alive>
-        <component :is="cmpPage"></component>
-    </keep-alive>
-
+    <my-cmp ref="myCmp">
+        <!-- <cmp-a>
+          <cmp-b>
+            <cmp-c></cmp-c>
+          </cmp-b>
+        </cmp-a> -->
+    </my-cmp>
+    <!-- <input v-for="item in 3" ref="input"/> -->
 </div>
 
 <script>
-    Vue.component(
-        'cmp-post', {
-            data() {
-                return {
-                    postCmp: undefined,
-                    posts: [
-                        {title: '标题', content: { template: `<div>内容1</div>`}, id: 11},
-                        {title: '标题', content: { template: `<div>内容2</div>`}, id: 12},
-                        {title: '标题', content: { template: `<div>内容3</div>`}, id: 13},
-                    ]
-                }
+    Vue.component('my-cmp', {
+        provide() {
+            return {
+                share: this.share
+            }
+        },
+        data() {
+            return {
+                share: 'share',
+            }
+        },
+        mounted() {
+            this.datePicker('inputA');
+            this.datePicker('inputB');
+        },
+        beforeDestroy() {
+            // this.picker.destroy();
+        },
+        methods: {
+            datePicker(refName) {
+                var picker = new Pikaday({
+                    field: this.$refs[refName],
+                    format: 'YYYY-MM-DD'
+                })
+
+                this.$once('hook:beforeDestroy', () => {
+                    picker.destroy();
+                })
             },
-            created() {
-                this.postCmp = this.posts[0].content;
-            },
-            activated() {
-                console.log('post-activated');
-            },
-            deactivated() {
-                console.log('post-deactivated');
-            },
-            template: `
-                <div>
-                    <button v-for="post in posts" :key="post.id" @click="postCmp = post.content">{{ post.title }}</button>
-                    <keep-alive>
-                        <component :is="postCmp"></component>
-                    </keep-alive>
-                </div>
-            `
-        }
-    );
-    Vue.component(
-        'cmp-more', {
-            activated() {
-                console.log('more-activated');
-            },
-            deactivated() {
-                console.log('more-deactivated');
-            },
-            template: `
-                <div>more</div>
-            `
-        }
-    );
+        },
+        template: `<div>
+        <input ref="inputA"/>
+        <input ref="inputB"/>
+        <button @click="$destroy()">销毁自己</button>
+      </div>`
+    });
+
+    Vue.component('cmp-a', {
+        inject: ['share'],
+        mounted() {
+            console.log(this.share);
+        },
+        template: '<div><slot></slot></div>'
+    });
+
+    Vue.component('cmp-b', {
+        inject: ['share'],
+        mounted() {
+            console.log(this.share);
+        },
+        // mounted () {
+        //   this.$root.name = 'duyi';
+        // },
+        template: '<div><slot></slot></div>'
+    });
+
+    Vue.component('cmp-c', {
+        mounted() {
+
+            console.log(this.$parent.share || this.$parent.$parent.share || this.$parent.$parent.$parent.root);
+        },
+        template: '<div><slot></slot></div>'
+    });
 
     const vm = new Vue({
         el: '#app',
-        data: {
-            cmpPage: 'cmp-post',
-            pages: [
-                {name: '博客', cmp: 'cmp-post', id: 0},
-                {name: '更多', cmp: 'cmp-more', id: 1},
-            ]
+        mounted() {
+            console.log(this.$refs);
         },
-    });
+        data: {
+            name: 'shanshan',
+        }
+    })
 </script>
 </body>
 
