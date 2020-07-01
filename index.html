@@ -1,187 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>19</title>
-    <link rel="stylesheet" href="./index.css">
+    <title>43</title>
     <script src="./vue.js"></script>
 </head>
 
 <body>
-
 <div id="app">
-    <div class="store">
-        <input
-                type="checkbox"
-                class="select-all"
-                v-model="checkedAll"
-        />
-        <span class="store-name">渡一教育Web前端</span>
-    </div>
-    <ul class="course-list">
-        <li
-                class="course"
-                v-for="course in courseList"
-                :key="course.id"
-        >
-            <input
-                    type="checkbox"
-                    class="course-radio"
-                    v-model="course.checked"
-            />
-            <div class="poster">
-                <img :src="course.poster" :alt="course.title">
-            </div>
-            <div class="content">
-                <div class="title">{{ course.title }}</div>
-                <div class="price-container">
-                    <div class="price">￥{{ course.price }}</div>
-                    <div class="control-cart">
-                        <button
-                                class="minus-cart"
-                                @click="controlCart('-', course)"
-                        >-
-                        </button>
-                        <input
-                                type="text"
-                                class="cart-num"
-                                v-model.number="course.cart"
-                        >
-                        <button
-                                class="add-cart"
-                                @click="controlCart('+', course)"
-                        >+
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </li>
-    </ul>
-    <div class="control">
-        <div class="select">
-            <input
-                    type="checkbox"
-                    class="select-all"
-                    v-model="checkedAll"
-            >
-            <span>全选</span>
-        </div>
-        <div class="price-container">
-            <span>合计：</span>
-            <span class="price">￥{{ selectTotalPrice }}</span>
-            <button class="accounts">结算({{ selectNum }})</button>
-        </div>
-    </div>
+    <!--<my-cmp v-focus></my-cmp>-->
+    <!--<input type="text" v-focus:src.x.y="name" v-if="show"/>-->
 
+    <!--<input type="text" v-myshow="show"/>-->
+    <!--<input type="text" v-mymodel="content"/>{{ content }}-->
+
+    <input type="text" v-slice:[slicenum].number="content"/>{{ content }}
 </div>
 
 <script>
-    const vm = new Vue({
-        el: '#app',
-        data: {
-            // checkArr: [],
-            courseList: [
-                {
-                    poster: 'https://img.alicdn.com/bao/uploaded/i1/TB1VtAgdlWD3KVjSZFs3KIqkpXa_040950.jpg_80x80.jpg',
-                    title: '渡一教育 CSS3 深度剖析',
-                    price: 1299,
-                    cart: 1,
-                    id: 0,
-                },
-                {
-                    poster: 'https://img.alicdn.com/bao/uploaded/i7/TB1_VJecBWD3KVjSZKPagip7FXa_045814.jpg_80x80.jpg',
-                    title: '渡一教育 移动端开发课程',
-                    price: 1148,
-                    cart: 1,
-                    id: 1595402664708
-                },
-                {
-                    poster: 'https://img.alicdn.com/bao/uploaded/i2/TB1J.Q4cQxz61VjSZFto7uDSVXa_010347.jpg_80x80.jpg',
-                    title: '渡一教育 2019年 HTMLCSS零基础入学宝典',
-                    price: 1,
-                    cart: 1,
-                    id: 1596305473062
-                },
-                {
-                    poster: 'https://img.alicdn.com/bao/uploaded/i2/TB1bHwlaCWD3KVjSZSgVbgCxVXa_032434.jpg_80x80.jpg',
-                    title: '渡一教育 Web前端开发JavaScriptJs课',
-                    price: 1,
-                    cart: 1,
-                    id: 1595413512182
-                },
-                {
-                    poster: 'https://img.alicdn.com/bao/uploaded/i2/TB1MJd3g4z1gK0jSZSgnHevwpXa_014447.jpg_80x80.jpg',
-                    title: 'Web前端开发高级工程师全阶班【渡一教育】',
-                    price: 12798,
-                    cart: 1,
-                    id: 1596302161181
-                },
-                {
-                    poster: 'https://img.alicdn.com/bao/uploaded/i6/TB1xPeAbwaH3KVjSZFpjaLhKpXa_105848.jpg_80x80.jpg',
-                    title: '渡一教育 Java零基础入门到精通（集合，泛型等）',
-                    price: 1,
-                    cart: 1,
-                    id: 1596300025301,
-                },
-            ]
+    // 使用时：v-on v-bind:src v-model  v-
+    // 全局
+    Vue.directive(
+        'focus', {
+            //bind只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
+            bind(el, binding, vnode) {
+                // console.log('bind');
+                console.log(el);
+                console.log(binding.name);
+                console.log(binding.value);
+                console.log(binding.expression);
+                console.log(binding.arg);
+                console.log(binding.modifiers);
+                console.log(vnode.context);
+                // el.focus();
+            },
+            inserted(el) {//此钩子函数是在被插入到父元素时即执行
+                console.log('inserted');
+                // el.focus()
+            },
+            //update,所在组件的 VNode 更新时调用，但是可能发生在其子 VNode 更新之前。
+            update() {
+                console.log('update');
+            },
+            componentUpdated() {
+                console.log('componentUpdated');
+            },
+            unbind() {
+                console.log('unbind');
+            },
+        }
+    );
+
+    Vue.component(
+        'my-cmp', {
+            template: `
+                <div><p>mr deng is a p</p></div>
+            `
+        }
+    );
+
+    // 模拟v-show
+    // show -> true -> 显示
+    // show -> false -> 隐藏 display: none
+    Vue.directive('myshow', {
+        bind(el, binding) {
+            const {value} = binding;
+            const display = value ? '' : 'none';
+            el.style.display = display;
         },
-        computed: {
-            selectList() {//选中的商品组成的数组
-                return this.courseList.filter(course => {
-                    return course.checked;
-                })
-            },
-            selectTotalPrice() {
-                let price = 0;
-                this.selectList.forEach(course => {
-                    price += course.price * course.cart;
-                });
-                return price;
-            },
-            selectNum() {
-                return this.selectList.length;
-            },
-            // checkedAll() {//全选按钮
-            //     return this.courseList.every(course => {
-            //         return course.checked;
-            //     });
-            // },
-            checkedAll: {
-                get() {
-                    return this.courseList.every(course => {
-                        return course.checked;
-                    });
-                },
-                //操作复选框等于给checkedAll新赋一个值,遍历数据数组使得每一项的checked属性均同时更改值为true或false
-                set(val) {
-                    this.courseList.forEach(course => {
-                        course.checked = val;
-                    })
-                }
-            }
-        },
-        methods: {
-            controlCart(type, course) {
-                let cartNum = course.cart;
-                if (type === '-') {
-                    if (cartNum === 1) {
-                        alert('不能再减了');
-                        return;
-                    } else {
-                        course.cart--;
-                    }
-                } else {
-                    course.cart++;
-                }
-            },
+        update(el, binding) {
+            const {value} = binding;
+            const display = value ? '' : 'none';
+            el.style.display = display;
         },
     });
 
-    vm.courseList.forEach(course => {
-        vm.$set(course, 'checked', false);
+    // v-model
+    // 1. 通过绑定的数据，给元素设置value
+    // 2. 当触发input事件时，更改绑定的数据值
+    // 3. 更改数据后，同步input的value值
+    Vue.directive('mymodel', {
+        bind(el, binding, vnode) {
+            const vm = vnode.context;//元素绑定的实例
+            const {value, expression} = binding;
+            el.value = value;
+
+            el.oninput = function () {
+                const inputVal = el.value; //取得输入框中的值
+                vm[expression] = inputVal; //元素所绑定实例对象的值
+            }
+        },
+        update(el, binding) {
+            const {value} = binding;
+            el.value = value;
+        }
     });
+
+    // 截取input框内的文字
+    // v-slice:5.number
+    /*Vue.directive('slice', {
+        bind(el, binding, vnode) {
+            const vm = vnode.context;//元素绑定的实例
+            let {value, expression, arg, modifiers} = binding;
+            arg = arg || 5;
+            if (modifiers.number) {
+                value = value.replace(/[^0-9]/g, '');
+            }
+            el.value = value.slice(0, arg);
+            vm[expression] = value.slice(0, arg);
+
+            el.oninput = function () {
+                let {value} = el; //取得输入框中的值
+                if (modifiers.number) {
+                    value = value.replace(/[^0-9]/g, '');
+                }
+                vm[expression] = value.slice(0, arg); //元素所绑定实例对象的值
+                el.value = value.slice(0, arg);
+            }
+        },
+        update(el, binding, vnode) {
+            let {value, expression, arg, modifiers} = binding;
+            arg = arg || 5;
+            if (modifiers.number) {
+                value = value.replace(/[^0-9]/g, '');
+            }
+            const vm = vnode.context;
+            el.value = value.slice(0, arg);
+            vm[expression] = value.slice(0, arg);
+
+            el.oninput = function () {
+                let {value} = el; //取得输入框中的值
+                if (modifiers.number) {
+                    value = value.replace(/[^0-9]/g, '');
+                }
+                vm[expression] = value.slice(0, arg); //元素所绑定实例对象的值
+                el.value = value.slice(0, arg);
+            }
+        },
+    });*/
+
+    //函数简写
+    Vue.directive('slice', (el, binding, vnode) => {
+        const vm = vnode.context;//元素绑定的实例
+        let {value, expression, arg, modifiers} = binding;
+        arg = arg || 5;
+        if (modifiers.number) {
+            value = value.replace(/[^0-9]/g, '');
+        }
+        el.value = value.slice(0, arg);
+        vm[expression] = value.slice(0, arg);
+
+        el.oninput = function () {
+            let {value} = el; //取得输入框中的值
+            if (modifiers.number) {
+                value = value.replace(/[^0-9]/g, '');
+            }
+            vm[expression] = value.slice(0, arg); //元素所绑定实例对象的值
+            el.value = value.slice(0, arg);
+        }
+    });
+
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            name: 'shanshan',
+            show: false,
+            content: 'shanshan',
+            slicenum: 3
+        },
+        //自定义指令，局部
+        // directives: {
+        //     // focus: {
+        //     // ...
+        //     // }
+        // },
+    })
 </script>
 </body>
 
