@@ -1,29 +1,20 @@
 <template>
-    <div>
-        xxx
-        {{ msg }}
-        <p>我是app组建的p元素</p>
-        <base-son/>
+    <div class="app">
+        <date-picker/>
     </div>
 </template>
 
 <script>
-    import baseSon from './son';
+    import DatePicker from './DatePicker'
+
     export default {
         name: "app",
         components: {
-            baseSon
-        },
-        data() {
-            return {
-                msg: 'hello world'
-            }
+            DatePicker,
         }
     }
 </script>
 
 <style scoped>
-    div {
-        background-color: red;
-    }
+
 </style>

@@ -4873,3 +4873,6 @@ yarn global add @vue/cli-service-global
 
 ## 安装vscode插件
 名字：Vetur。用于高亮.vue文件代码
+
+# 练习_日期选择器组件_结构
+* 运行指定的单个.vue文件：命令行中输入，vue serve xxx.vue
