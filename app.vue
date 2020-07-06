@@ -1,6 +1,7 @@
 <template>
     <div class="app">
-        <date-picker/>
+        <!--<date-picker :date="date" @choose-date="chooseDate"/>-->
+        <date-picker v-model="date"/>
     </div>
 </template>
 
@@ -11,7 +12,17 @@
         name: "app",
         components: {
             DatePicker,
-        }
+        },
+        data() {
+            return {
+                date: new Date()
+            }
+        },
+        // methods: {
+        //     chooseDate(date) {
+        //         this.date = date;
+        //     }
+        // }
     }
 </script>
 
