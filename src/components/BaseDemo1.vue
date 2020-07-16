@@ -2,7 +2,8 @@
     <div class="demo">
         <button @click="show = !show">click</button>
         <transition>
-            <div class="box" v-if="show">hello world</div>
+            <div v-if="show" key="world">hello world</div>
+            <div v-else key="shanshan">hello shanshan</div>
         </transition>
     </div>
 </template>
@@ -11,49 +12,23 @@
     export default {
         data() {
             return {
-                show: true,
+                show: true
             }
         }
     }
 </script>
 
 <style scoped>
-    button {
-        margin-bottom: 10px;
-    }
-
-    .box {
-        width: 100px;
-        height: 100px;
-        line-height: 100px;
-        text-align: center;
-        border: 1px solid red;
-        color: red;
-    }
-
-    .v-enter {
+    .v-enter, .v-enter-to {
         opacity: 0;
     }
 
-    .v-enter-active {
-        transition: opacity 0.5s;
+    .v-enter-active, .v-leave-active {
+        transition: all 0.3s;
     }
 
-    .v-enter-to {
+    .v-enter-to, .v-leave {
         opacity: 1;
     }
-
-    .v-leave {
-        opacity: 1;
-    }
-
-    .v-leave-active {
-        transition: opacity 0.5s;
-    }
-
-    .v-leave-to {
-        opacity: 0;
-    }
-
 
 </style>
