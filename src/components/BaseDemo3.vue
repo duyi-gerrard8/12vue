@@ -1,9 +1,14 @@
 <template>
     <div class="demo">
-        <button @click="handleClick">click</button>
-        <transition mode="out-in">
-            <div :key="keyName">hello {{ keyName }}</div>
-        </transition>
+        <input type="text" v-model="query">
+        <transition-group tag="ul">
+            <li
+                    v-for="item in computedLists"
+                    :key="item.name"
+            >{{ item.name }}
+            </li>
+        </transition-group>
+
     </div>
 </template>
 
@@ -11,29 +16,42 @@
     export default {
         data() {
             return {
-                keyName: 'world'
+                query: '',
+                lists: [
+                    {name: 'shanshan'},
+                    {name: 'jicheng'},
+                    {name: 'chensitong'},
+                    {name: 'dengxuming'},
+                ]
             }
         },
-        methods: {
-            handleClick() {
-                const isWorld = this.keyName === 'world';
-                this.keyName = isWorld ? 'shanshan' : 'world';
+        computed: {
+            computedLists() {
+                return this.lists.filter(item => item.name.includes(this.query));
             },
-        }
+        },
     }
 </script>
 
 <style scoped>
-    .v-enter, .v-enter-to {
+    li {
+        height: 24px;
+    }
+
+    .v-enter,
+    .v-leave-to {
         opacity: 0;
+        height: 0px;
     }
 
-    .v-enter-active, .v-leave-active {
-        transition: all 0.3s;
+    .v-leave-active,
+    .v-enter-active {
+        transition: all .3s;
     }
 
-    .v-enter-to, .v-leave {
+    .v-enter-to,
+    .v-leave {
         opacity: 1;
+        height: 24px;
     }
-
 </style>

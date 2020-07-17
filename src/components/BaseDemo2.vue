@@ -1,11 +1,16 @@
 <template>
     <div class="demo">
-        <button @click="handleClick">click</button>
-        <transition>
-            <!--<div v-if="show" key="world">hello world</div>-->
-            <!--<div v-else key="shanshan">hello shanshan</div>-->
-            <div :key="keyName">hello {{ keyName }}</div>
-        </transition>
+        <button @click="handleAdd">add</button>
+        <button @click="handleRemove">del</button>
+        <button @click="handleShuffle">洗牌</button>
+        <br/>
+        <transition-group tag="ul">
+            <li
+                    v-for="item in lists"
+                    :key="item"
+            >{{item}}
+            </li>
+        </transition-group>
     </div>
 </template>
 
@@ -13,29 +18,63 @@
     export default {
         data() {
             return {
-                keyName: 'world'
+                lists: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                nextNum: 11,
             }
         },
         methods: {
-            handleClick() {
-                const isWorld = this.keyName === 'world';
-                this.keyName = isWorld ? 'shanshan' : 'world';
+            handleAdd() {
+                const randomIndex = Math.floor(Math.random() * this.lists.length);
+                this.lists.splice(randomIndex, 0, this.nextNum++)
             },
-        }
+            handleRemove() {
+                const randomIndex = Math.floor(Math.random() * this.lists.length);
+                this.lists.splice(randomIndex, 1)
+            },
+            handleShuffle() {
+                this.lists.sort(() => Math.random() - 0.5);
+            }
+        },
     }
 </script>
 
 <style scoped>
-    .v-enter, .v-enter-to {
+    button {
+        /*display: block;*/
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+
+    ul,li {
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        list-style: none;
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .v-enter,
+    .v-leave-to {
         opacity: 0;
+        transform: translateY(30px);
     }
 
-    .v-enter-active, .v-leave-active {
-        transition: all 0.3s;
+    .v-enter-active,
+    .v-leave-active {
+        transition: all .3s;
     }
 
-    .v-enter-to, .v-leave {
+    .v-leave,
+    .v-enter-to {
         opacity: 1;
+        transform: translateY(0px);
     }
 
+    /*移动元素时*/
+    .v-move {
+        transition: transform 0.3s;
+    }
 </style>
