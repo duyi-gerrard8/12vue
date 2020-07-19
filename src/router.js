@@ -33,11 +33,12 @@ const routes = [
     },
     {
         path: '/activity',
-        component: () => import('./views/Activity'),
+        component: () => import(/*webpackChunkName: 'academic'*/'./views/Activity'),
+        //重定向
         // redirect: '/activity/academic',
         // redirect: {name: 'academic'},//用路由名字重定向
         redirect(to) {//函数形式的重定向
-            console.log(to);
+            // console.log(to);
             return {
                 name: 'academic',
             }
@@ -46,7 +47,7 @@ const routes = [
             {
                 path: 'academic',
                 name: 'academic',
-                component: () => import('./views/Academic'),
+                component: () => import(/*webpackChunkName: 'academic'*/'./views/Academic'),
             },
             {
                 path: 'personal',

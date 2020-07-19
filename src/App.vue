@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <div class="nav-box">
-            <div class="logo">渡一教育</div>
+            <router-link @click="handleClick" tag="div" class="logo">渡一教育</router-link>
             <div class="nav-list">
                 <router-link to="/home">首页</router-link>
                 <router-link to="/learn">课程学习</router-link>
@@ -21,7 +21,21 @@
 
     export default {
         name: 'App',
-        components: {}
+        components: {},
+        methods: {
+            handleClick() {
+                //push 等同于router-link to="/about"
+                this.$router.push('/home');
+
+                //replace
+                // this.$router.replace('/home');
+
+                //go
+                // this.$router.go(-1);
+
+                console.log(this.$route);
+            },
+        },
     }
 </script>
 
