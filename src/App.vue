@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <div class="nav-box">
-            <router-link @click="handleClick" tag="div" class="logo">渡一教育</router-link>
+            <router-link to="/home" @click="handleClick" tag="div" class="logo">渡一教育</router-link>
             <div class="nav-list">
                 <router-link to="/home">首页</router-link>
                 <router-link to="/learn">课程学习</router-link>

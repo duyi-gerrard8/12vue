@@ -48,6 +48,8 @@ const routes = [
                 path: 'academic',
                 name: 'academic',
                 component: () => import(/*webpackChunkName: 'academic'*/'./views/Academic'),
+
+
             },
             {
                 path: 'personal',
@@ -61,6 +63,17 @@ const routes = [
             },
         ],
     },
+
+    // {
+    //     path: '/course:id',
+    //     component: () => import('./views/About'),
+    // },
+
+    {
+        path: '/question/:id',
+        name: 'question',
+        component: () => import('./views/Question')
+    }
 
 ];
 
