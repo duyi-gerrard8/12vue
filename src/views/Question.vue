@@ -18,6 +18,15 @@
 
 <script>
     export default {
+        props: {
+            id: {
+                type: [String, Number],
+            },
+            name: {
+                type: String,
+                default: 'question',
+            }
+        },
         data () {
             return {
                 question: null,
@@ -25,6 +34,8 @@
         },
         mounted () {
             // this.getData();
+            console.log(this.id);
+            console.log(this.name);
         },
         computed: {
             otherQuestionList () {
@@ -55,7 +66,8 @@
         },
         methods: {
             handleClick (id) {
-                const { name } = this.$route;
+                // const { name } = this.$route;
+                const { name } = this;
 
                 this.$router.push({
                     name,
@@ -65,7 +77,8 @@
                 });
             },
             getData () {
-                const { id } = this.$route.params;
+                // const { id } = this.$route.params;
+                const {id} = this;
 
                 this.$axios.get(`/question/${id}`).then(res => {
                     this.question = res;

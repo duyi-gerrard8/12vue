@@ -21,7 +21,14 @@ const routes = [
     },
     {
         path: '/learn',
-        component: () => import('./views/Learn'),
+        // component: () => import('./views/Learn'),
+
+        //命名视图
+        //视图名字： 展示的组件
+        components: {
+            default: () => import('./views/Learn'),
+            student: () => import('./views/Student')
+        }
     },
     {
         path: '/student',
@@ -69,9 +76,16 @@ const routes = [
     //     component: () => import('./views/About'),
     // },
 
+    //路由组件传参
+    //如果 props 被设置为 true，则route.params 将会被设置为组件属性。
     {
         path: '/question/:id',
         name: 'question',
+        // props: true,
+        props: route => ({
+            name: route.name,
+            id: route.params.id,
+        }),
         component: () => import('./views/Question')
     }
 
