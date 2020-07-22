@@ -37,6 +37,11 @@ const routes = [
     {
         path: '/about',
         component: () => import('./views/About'),
+        //路由独享守卫
+        beforeEach(to, from, next) {
+            console.log('beforeEach');
+            next();
+        },
     },
     {
         path: '/activity',
@@ -91,11 +96,44 @@ const routes = [
 
 ];
 
-export default new VueRouter({
+const router = new VueRouter({
     mode: 'history',
     routes: routes,
     // linkActiveClass: 'link-active',
     // linkExactActiveClass: 'link-exact',
 });
 
+//导航守卫：全局前置守卫
+router.beforeEach((to, from, next) => {
+    // console.log(to);//去到哪
+    // console.log(from);//从哪来
 
+    console.log('beforeEach');
+    next(); //能否跳转
+
+    // if (to.path === '/student') {
+    //     next('/about');
+    // } else {
+    //     next();
+    // }
+
+    // next(new Error('不让跳转'));
+
+});
+
+//全局解析守卫
+router.beforeResolve((to, from, next) => {
+    console.log('beforeResolve');
+    next();
+});
+
+//全局后置钩子
+router.afterEach((to, from) => {
+    console.log('afterEach');
+});
+
+router.onError(err => {
+    console.log(err.message)
+});
+
+export default router;
