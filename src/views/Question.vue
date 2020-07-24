@@ -18,6 +18,10 @@
 
 <script>
     export default {
+        // beforeRouteLeave(to, from, next) {
+        //     const isGo = window.confirm('真要走？？');
+        //     isGo ? next() : next(false);
+        // },
         props: {
             id: {
                 type: [String, Number],
@@ -34,8 +38,8 @@
         },
         mounted () {
             // this.getData();
-            console.log(this.id);
-            console.log(this.name);
+            // console.log(this.id);
+            // console.log(this.name);
         },
         computed: {
             otherQuestionList () {
@@ -85,6 +89,7 @@
                 })
             },
         },
+        //上一个下一个 跳转1
         watch: {
             '$route': {
                 handler () {
@@ -92,7 +97,11 @@
                 },
                 immediate: true,
             }
-        }
+        },
+        //上一个下一个 跳转2
+        // beforeRouteUpdate(to, from, next) {
+        //
+        // }
     }
 </script>
 

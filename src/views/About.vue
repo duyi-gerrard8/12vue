@@ -7,6 +7,9 @@
         name: "About",
         mounted() {
             // console.log(this.$route.params);
+
+            //获取路由元信息
+            console.log(this.$route.meta.a);
         },
 
     }

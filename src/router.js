@@ -2,10 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Home from './views/Hone';
-// import Learn from './components/Learn';
-// import Student from './components/Student';
-// import About from './components/About';
-// import Activity from './components/Activity';
+
+import auth from './utils/auth';
 
 Vue.use(VueRouter);
 
@@ -42,6 +40,14 @@ const routes = [
             console.log('beforeEach');
             next();
         },
+
+        //路由元信息.可利用它配置自定义的信息
+        meta: {
+            // a: 1,
+            // b: 10,
+            requiresLogin: true,
+            backAsk: true,
+        }
     },
     {
         path: '/activity',
@@ -54,6 +60,10 @@ const routes = [
             return {
                 name: 'academic',
             }
+        },
+        meta: {
+            requiresLogin: true,
+            backAsk: true,
         },
         children: [
             {
@@ -92,6 +102,11 @@ const routes = [
             id: route.params.id,
         }),
         component: () => import('./views/Question')
+    },
+
+    {
+        path: '/login',
+        component: () => import('./views/login'),
     }
 
 ];
@@ -134,6 +149,31 @@ router.afterEach((to, from) => {
 
 router.onError(err => {
     console.log(err.message)
+});
+
+//路由元信息应用例子
+router.beforeEach((to, from, next) => {
+    // console.log(to.meta.requiresLogin);
+    // next();
+    const isRequiresLogin = to.matched.some(item => item.meta.requiresLogin);
+    console.log(isRequiresLogin);
+
+    if (isRequiresLogin) {
+        const isLogin = auth.isLogin();
+        if (isLogin) {
+            next();
+        } else {
+            const isToLogin = window.confirm('登录吗？？');
+            isToLogin ? next('/login') : next(false);
+
+            next(false);
+        }
+        next(false);
+    } else {
+        next();
+    }
+
+    
 });
 
 export default router;
