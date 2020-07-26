@@ -11,8 +11,10 @@
             </div>
         </div>
         <div class="container">
-            <router-view></router-view>
-            <router-view name="student"></router-view>
+            <transition>
+                <router-view></router-view>
+            </transition>
+            <!--<router-view name="student"></router-view>-->
         </div>
 
     </div>
@@ -41,6 +43,23 @@
 </script>
 
 <style>
+    /*过渡动效*/
+    .v-enter {
+        transform: translateX(1000px);
+    }
+
+    .v-enter-active {
+        transition: all 0.3s;
+    }
+
+    .v-enter-to {
+        transform: translateX(0px);
+    }
+
+    #app {
+        /*overflow-x: hidden;*/
+    }
+
     .nav-box {
         display: flex;
         justify-content: space-between;

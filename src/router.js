@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Home from './views/Hone';
+import Home from './views/Home';
 
 import auth from './utils/auth';
 
@@ -25,7 +25,7 @@ const routes = [
         //视图名字： 展示的组件
         components: {
             default: () => import('./views/Learn'),
-            student: () => import('./views/Student')
+            // student: () => import('./views/Student')
         }
     },
     {
@@ -116,6 +116,24 @@ const router = new VueRouter({
     routes: routes,
     // linkActiveClass: 'link-active',
     // linkExactActiveClass: 'link-exact',
+
+    //滚动行为
+    scrollBehavior(to, from, savedPosition) {
+        console.log(savedPosition);
+        if (savedPosition) {
+            return savedPosition
+        } else {
+            if (to.hash) {
+                return {selector: to.hash}
+            } else {
+                return {x: 0, y: 0}
+            }
+        }
+        // return {
+        //     x: 0,
+        //     y: 0,
+        // }
+    },
 });
 
 //导航守卫：全局前置守卫
@@ -173,7 +191,6 @@ router.beforeEach((to, from, next) => {
         next();
     }
 
-    
 });
 
 export default router;
