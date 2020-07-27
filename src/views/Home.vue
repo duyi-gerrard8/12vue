@@ -1,17 +1,37 @@
 <template>
     <div class="home">
         首页
-        <router-link to="/about#a">去关于</router-link>
-        <div class="test">测试</div>
+        <button @click="$store.state.count++">点击</button>
+        {{ storeCount }}
     </div>
 </template>
 
 <script>
+    import { mapState } from 'vuex';
+    console.log(mapState(['count']));
+
     export default {
-        name: "Home"
+        name: "Home",
+        data() {
+            return {
+                count: 100,
+            }
+        },
+        // computed: {
+        //     count() {
+        //         return this.$store.state.count;
+        //     }
+        // }
+        computed: {
+            // ...mapState(['count']),
+            //重命名
+            ...mapState({
+                storeCount: state => state.count
+            })
+        }
     }
 </script>
 
 <style scoped>
- .test{ margin-top:1000px;}
+
 </style>
