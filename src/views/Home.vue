@@ -59,28 +59,11 @@
             ...mapMutations(['countIncrement']),
             handleClick() {
                 const num = Math.floor(Math.random() * 10);
-                //常用提交方式
-                // this.$store.commit('countIncrement', {num});
 
-                //对象风格的提交方式
-                // this.$store.commit({
-                //     type: 'countIncrement',
-                //     num,
-                // })
+                this.$store.dispatch('countIncrement', {num}).then(() => {
+                    alert('count值已增加');
+                })
 
-                // this.countIncrement();
-
-                //使用常量替代 Mutation 事件类型
-                this.$store.commit({
-                    // type: 'COUNT_INCREMENT',
-
-                    //也可在当前组件中引入
-                    type: COUNT_INCREMENT,
-                    num,
-                });
-
-                //Mutation 需遵守 Vue 的响应规则
-                this.$store.commit(CHANGE_OBJ);
             },
 
             //表单处理

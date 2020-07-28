@@ -34,8 +34,9 @@ export default new Vuex.Store({
     //     }
     // },
 
-    //使用常量替代 Mutation 事件类型
+
     mutations: {
+        //使用常量替代 Mutation 事件类型
         [COUNT_INCREMENT](state, {num}) {
             state.count += num;
         },
@@ -50,5 +51,17 @@ export default new Vuex.Store({
         [UPDATE_MSG](state, {value}) {
             state.msg = value;
         }
-    }
+    },
+
+    actions: {
+        countIncrement(context, payload) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    context.commit(COUNT_INCREMENT, payload);
+                    resolve();
+                }, 1000);
+            });
+
+        },
+    },
 });
