@@ -3,12 +3,14 @@
         首页
         <button @click="$store.state.count++">点击</button>
         {{ storeCount }}
+        {{ countDouble }}
+        {{ countAdd(3) }}
     </div>
 </template>
 
 <script>
-    import { mapState } from 'vuex';
-    console.log(mapState(['count']));
+    import { mapState, mapGetters } from 'vuex';
+    // console.log(mapState(['count']));
 
     export default {
         name: "Home",
@@ -27,7 +29,9 @@
             //重命名
             ...mapState({
                 storeCount: state => state.count
-            })
+            }),
+
+            ...mapGetters(['countAdd', 'countDouble']),
         }
     }
 </script>
