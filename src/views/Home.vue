@@ -3,7 +3,7 @@
         首页
         <button @click="handleClick">点击</button>
         {{ storeCount }}
-        {{ countDouble }}
+        {{ countDouble }} {{ $store.getters['count/countDouble'] }}
         {{ countAdd(3) }}
         {{ obj }}
 
@@ -35,11 +35,11 @@
         computed: {
             // ...mapState(['count']),
             //重命名
-            ...mapState({
+            ...mapState('count', {
                 storeCount: state => state.count
             }),
 
-            ...mapGetters(['countAdd', 'countDouble']),
+            ...mapGetters('count', ['countAdd', 'countDouble']),
 
             //Mutation 需遵守 Vue 的响应规则
             ...mapState(['obj']),
@@ -60,7 +60,7 @@
             handleClick() {
                 const num = Math.floor(Math.random() * 10);
 
-                this.$store.dispatch('countIncrement', {num}).then(() => {
+                this.$store.dispatch('count/countIncrement', {num}).then(() => {
                     alert('count值已增加');
                 })
 
